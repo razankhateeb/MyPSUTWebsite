@@ -1,5 +1,5 @@
 import FooterComponent from "./Components/Footer";
-import HeaderComponent from "./Components/Header";
+import HeaderComponent from "./Components/Shared/Header/Header";
 import Body from "./Components/Body";
 
 function App() {
