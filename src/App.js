@@ -1,7 +1,13 @@
+import FooterComponent from "./Components/Footer";
+import HeaderComponent from "./Components/Header";
+import Body from "./Components/Body";
+
 function App() {
   return (
     <div>
-      <h2>Let's get started!</h2>
+      <HeaderComponent></HeaderComponent>
+      <Body></Body>
+      <FooterComponent></FooterComponent>
     </div>
   );
 }
