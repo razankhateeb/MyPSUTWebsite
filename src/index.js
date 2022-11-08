@@ -1,7 +1,8 @@
 import ReactDOM from "react-dom/client";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./index.css";
-import "./CSS/dark.css";
+import "./css/dark.css";
 
 import App from "./App";
 

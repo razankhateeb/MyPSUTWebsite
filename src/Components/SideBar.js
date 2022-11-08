@@ -1,28 +1,26 @@
 import React from "react";
 
-function SideBar() {
+import NavItem from "./NavItem";
+
+const SideBar = (props) => {
   return (
-    <div>
-      <nav class="app-sidebar">
-        <div class="container-fluid">
-          <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">
-              <li class="nav-item">
-                <a class="nav-link app-sidebar-link active">
-                  <i class="fa-solid fa-house"></i>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link app-sidebar-link" onclick="openNew()">
-                  <i class="fa-solid fa-calendar-plus"></i>
-                </a>
-              </li>
-            </ul>
-          </div>
+    <nav className="app-sidebar">
+      <div className="container-fluid">
+        <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+          <ul className="navbar-nav flex-grow-1">
+            <NavItem
+              icon={props.items[0].icon}
+              classes={props.items[0].classes}
+            ></NavItem>
+            <NavItem
+              icon={props.items[1].icon}
+              classes={props.items[1].classes}
+            ></NavItem>
+          </ul>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
-}
+};
 
 export default SideBar;

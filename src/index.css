@@ -214,12 +214,12 @@ i {
 
 .app-sidebar-link:hover {
   background-color: var(--link-color-hover);
-  color: var(--link-color-active);
+  color: var(--link-color-active) !important;
 }
 
 .app-sidebar-link.active {
   background-color: var(--link-color-active-bg);
-  color: var(--link-color-active);
+  color: var(--link-color-active) !important;
 }
 
 .page-main {
