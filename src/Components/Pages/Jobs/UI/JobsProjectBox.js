@@ -1,5 +1,14 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-function JobBox() {
+import JobDetails from "./Pages/Jobs/UI/JobDetails";
+
+import "../CSS/jobs.css";
+function JobsProjectBox() {
+  const openJobsDetails = () => {
+    <JobDetails></JobDetails>;
+  };
+
   return (
     <div class="project-box-wrapper">
       <div class="project-box">
@@ -9,7 +18,9 @@ function JobBox() {
               class="project-btn-more fa-solid fa-pen"
               title="More Details"
               onclick="openJob()"
-            ></button>
+            >
+              <FontAwesomeIcon icon={faPen} onClick={openJobsDetails} />
+            </button>
           </div>
         </div>
         <div class="project-box-content-header">
@@ -29,4 +40,4 @@ function JobBox() {
   );
 }
 
-export default JobBox;
+export default JobsProjectBox;

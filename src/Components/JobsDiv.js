@@ -5,16 +5,15 @@ import { faBusSimple } from "@fortawesome/free-solid-svg-icons";
 import { faListUl } from "@fortawesome/free-solid-svg-icons";
 import { faShareFromSquare } from "@fortawesome/free-solid-svg-icons";
 
-import "../css/jobs.css";
-import ProjectsHeader from "./Shared/Project/ProjectHeader";
-import ProjectBox from "./Shared/Project/ProjectBox";
+import JobsProjectBox from "./Pages/Jobs/UI/JobsProjectBox";
+import JobsProjectHeader from "./Pages/Jobs/UI/JobsProjectHeader";
 
-function MainDiv() {
+function JobsDiv() {
   return (
     <main role="main" class="pb-3 page-main">
       <div class="app-list">
         <div class="projects-section">
-          <ProjectsHeader></ProjectsHeader>
+          <JobsProjectHeader></JobsProjectHeader>
           <div class="projects-section-line">
             <div class="projects-status">
               <div class="item-status">
@@ -36,11 +35,11 @@ function MainDiv() {
             </div>
           </div>
           <div class="project-boxes jsListView">
-            <ProjectBox></ProjectBox>
-            <ProjectBox></ProjectBox>
-            <ProjectBox></ProjectBox>
-            <ProjectBox></ProjectBox>
-            <ProjectBox></ProjectBox>
+            <JobsProjectBox></JobsProjectBox>
+            <JobsProjectBox></JobsProjectBox>
+            <JobsProjectBox></JobsProjectBox>
+            <JobsProjectBox></JobsProjectBox>
+            <JobsProjectBox></JobsProjectBox>
           </div>
         </div>
       </div>
@@ -48,4 +47,4 @@ function MainDiv() {
   );
 }
 
-export default MainDiv;
+export default JobsDiv;
