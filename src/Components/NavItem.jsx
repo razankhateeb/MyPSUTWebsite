@@ -10,7 +10,7 @@ const NavItem = (props) => {
     <li className="nav-item">
       <a className={classes}>
         <i>
-          <FontAwesomeIcon icon={icon} />
+          <FontAwesomeIcon icon={icon} onClick={props.onClick}/>
         </i>
       </a>
     </li>
