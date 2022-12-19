@@ -123,7 +123,7 @@ i {
 
 .add-btn {
   color: var(--main-color);
-  background-color: var(--primary);
+  background-color: white;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -173,6 +173,7 @@ i {
 
 .profile-btn i {
   color: var(--main-color);
+  margin-right: 10px;
 }
 
 .app-container {
@@ -398,6 +399,9 @@ form h5 {
     width: 100%;
   }
 }
+.logo {
+  width: 30%;
+}
 
 @media screen and (max-width: 670px) {
 }
@@ -602,10 +606,10 @@ form h5 {
   .project-boxes.jsListView .project-box > * {
     margin-right: 10px;
   }
-  .project-boxes.jsListView .more-wrapper {
+  /* .project-boxes.jsListView .more-wrapper {
     right: 2px;
     top: 10px;
-  }
+  } */
   .form-popup {
     top: 20%;
     left: 10%;

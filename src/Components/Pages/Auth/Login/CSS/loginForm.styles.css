@@ -1,0 +1,205 @@
+:root {
+    --primary: #0d2c71;
+    --secondary: #fff;
+}
+
+
+section.main {
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.form-wrapper {
+    width: 100%;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 50%;
+
+    border-radius: 50px;
+    padding: 30px 0;
+}
+
+.logo {
+    width: 30%;
+}
+
+.form p {
+    font-size: 25px;
+    color: #0d2c71;
+    font-weight: 700;
+    margin-top: 25px;
+    text-transform: capitalize;
+}
+
+.text_field {
+    position: relative;
+    border-bottom: 2px solid #adadad;
+    margin: 25px 0;
+    width: 70%;
+}
+
+.text_field input {
+    padding: 0 5px;
+    height: 40px;
+    font-size: 16px;
+    border: none;
+    background: none;
+    outline: none;
+
+    width: 100%;
+}
+
+.text_field label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    color: #adadad;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.text_field span::before {
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #0d2c71;
+    transition: 0.5s;
+}
+
+.text_field input:focus ~ label,
+.text_field input:valid ~ label {
+    top: -5px;
+    color: #0d2c71;
+}
+
+.text_field input:focus ~ span::before,
+.text_field input:valid ~ span::before {
+    width: 100%;
+}
+
+input[type="submit"] {
+    width: 50%;
+    height: 50px;
+    border: 1px solid #0d2c71;
+    background: #0d2c71;
+    border-radius: 10px;
+    font-size: 18px;
+    color: #e9f4fb;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 10px 30px 0 rgb(95 186 233 / 40%);
+}
+
+input[type="submit"]:hover {
+    border-color: #0d2c71;
+    transition: 0.5s;
+}
+
+.forgot {
+    margin-top: 25px;
+}
+
+.forgot a {
+    color: #0d2c71;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.forgot a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 1280px) {
+}
+
+@media screen and (max-width: 1024px) {
+    .form {
+        padding: 20px 0;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .form {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+}
+
+@media screen and (max-width: 768px) {
+    .form {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 670px) {
+}
+
+@media screen and (max-width: 500px) {
+}
+
+@media screen and (max-width: 420px) {
+    .text_field {
+        margin: 10px;
+    }
+
+    .login-btn {
+        margin-top: 20px;
+    }
+}
+
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}

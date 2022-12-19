@@ -16,7 +16,7 @@
 .projects-section-line {
   display: flex;
   justify-content: space-between;
-
+  /* align-items: center; */
   padding-bottom: 32px;
 }
 
@@ -123,11 +123,11 @@
   margin-right: 24px;
 }
 
-/* .project-boxes.jsListView .more-wrapper {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-} */
+.project-boxes.jsListView .more-wrapper {
+  /* position: absolute;
+    right: 16px;
+    top: 16px; */
+}
 
 .project-boxes.jsListView .project-box-content-header {
   order: 1;
@@ -173,19 +173,6 @@
   padding: 16px;
   background-color: var(--main-color-card);
 }
-
-/*.project-box::before {*/
-/*    content: "";*/
-/*    display: inline-block;*/
-/*    width: 6%;*/
-/*    background-image: url("../img/Amazon_icon.png");*/
-/*    background-color: #fff;*/
-/*    border-radius: 50%;*/
-/*    background-repeat: no-repeat;*/
-/*    padding-top: 6%;*/
-/*    object-fit: scale-down;*/
-/*    background-size: contain;*/
-/*}*/
 
 .project-box-wrapper:nth-child(even) .project-box {
   background-color: #f5f5f3;
