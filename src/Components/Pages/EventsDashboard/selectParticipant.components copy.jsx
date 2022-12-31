@@ -1,17 +1,43 @@
 import { Modal } from "react-bootstrap";
-import stdAffairs from "../../../img/stdAffairs.png";
-import engLogo from "../../../img/ENGlogo.png";
-import arcLogo from "../../../img/arc.jpg";
-import acmLogo from "../../../img/acm.png";
-import cyberSecurity from "../../../img/cyber Security.JPG";
-import admissionLogo from "../../../img/admissions.png";
-import gsdc from "../../../img/gsdc.JPG";
-import dart from "../../../img/dart.jpg";
-import ieee from "../../../img/ieee.jpg";
-import { faImage } from "@fortawesome/free-regular-svg-icons/faImage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useState } from "react";
+
+const success = () => toast.success("Successfully registered");
+const errormsg = () => toast.error("Oops! An error occurred.");
 
 export default function SelectParticipantForm(props) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+
+  const submitForm = async (event) => {
+    // prevents default form as in prevents reload on submit
+    event.preventDefault();
+    const request = new FormData();
+    request.append("org_image", image);
+    //axios helps to send post
+    await axios
+      .post(
+        `http://localhost:8000/create_Organizer?organizer_name=${name}`,
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          success();
+          props.onHide();
+          props.fetchJobsHandler();
+        }
+      })
+      .catch((error) => {
+        errormsg();
+      });
+  };
+
   return (
     <Modal
       {...props}
@@ -69,6 +95,9 @@ export default function SelectParticipantForm(props) {
                   type="text"
                   placeholder="Enter Participant Name"
                   name="Name"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
                 />
               </div>
               <div className="col-sm-12 ">
@@ -77,21 +106,17 @@ export default function SelectParticipantForm(props) {
                 </label>
                 <input
                   type="file"
+                  accept="image/png,image/jpeg,image/jpg"
                   placeholder="Filename"
-                  // onChange={(e) => {
-                  //   setImage(e.target.files[0]);
-                  // }}
+                  onChange={(e) => {
+                    setImage(e.target.files[0]);
+                  }}
                 />
               </div>
-              {/* <div className="col-sm-4 col-lg-2">
-                <div className="add-participant-image">
-                  <FontAwesomeIcon icon={faImage} />
-                </div>
-              </div> */}
             </div>
             <div className="row">
               <div className="col-sm-12 col-lg-12">
-                <button type="button" className="btn">
+                <button type="button" className="btn" onClick={submitForm}>
                   Save
                 </button>
               </div>

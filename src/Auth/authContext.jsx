@@ -52,9 +52,12 @@ export const AuthContextProvider = (props) => {
           localStorage.setItem("admin_role", res.data.user_role);
           switch (res.data.user_role) {
             case "SUPERUSER":
-              navigate("EventMain");
+              navigate("Admin");
               break;
             case "EventsAdmin":
+              navigate("EventMain");
+              break;
+            case "ClubsAdmin":
               navigate("ClubPage");
               break;
             case "JobsAdmin":

@@ -114,6 +114,7 @@ export default function EditClub(props) {
               <input
                 type="file"
                 placeholder="Filename"
+                accept="image/png,image/jpeg,image/jpg"
                 onChange={(e) => {
                   setIcon(e.target.files[0]);
                 }}
@@ -126,6 +127,7 @@ export default function EditClub(props) {
               </label>
               <input
                 type="file"
+                accept="image/png,image/jpeg,image/jpg"
                 placeholder="Filename"
                 onChange={(e) => {
                   setImage(e.target.files[0]);

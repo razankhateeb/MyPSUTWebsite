@@ -116,6 +116,7 @@ export default function CreateClub(props) {
               <input
                 type="file"
                 placeholder="Filename"
+                accept="image/png,image/jpeg,image/jpg"
                 onChange={(e) => {
                   setIcon(e.target.files[0]);
                 }}
@@ -129,6 +130,7 @@ export default function CreateClub(props) {
               <input
                 type="file"
                 placeholder="Filename"
+                accept="image/png,image/jpeg,image/jpg"
                 onChange={(e) => {
                   setImage(e.target.files[0]);
                 }}

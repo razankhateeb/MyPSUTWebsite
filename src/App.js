@@ -11,6 +11,8 @@ import PermitMain from "./Components/Pages/Permit/PermitsMain";
 import TutorRequests from "./Components/Pages/Tutors/UI/TutorRequests.jsx";
 import CourseRequests from "./Components/Pages/Tutors/UI/CourseRequests.jsx";
 import Error404 from "./Components/404";
+import Privacy from "./Components/Privacy";
+import AdminMain from "./Components/Pages/SuperAdmin/UI/AdminMain";
 function App() {
   const authCtx = useContext(AuthContext);
 
@@ -18,11 +20,23 @@ function App() {
     <div>
       <Routes>
         <Route exact path="/" element={<LoginPage />} />
+
+        <Route
+          exact
+          path="/Admin"
+          element={
+            authCtx.isLoggedIn && authCtx.admin_role === "SUPERUSER" ? (
+              <AdminMain />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
         <Route
           exact
           path="/EventMain"
           element={
-            authCtx.isLoggedIn && authCtx.admin_role === "SUPERUSER" ? (
+            authCtx.isLoggedIn && authCtx.admin_role === "EventsAdmin" ? (
               <EventMain />
             ) : (
               <Navigate to="/" replace />
@@ -33,7 +47,7 @@ function App() {
           exact
           path="/ClubPage"
           element={
-            authCtx.isLoggedIn && authCtx.admin_role === "EventsAdmin" ? (
+            authCtx.isLoggedIn && authCtx.admin_role === "ClubsAdmin" ? (
               <ClubMain />
             ) : (
               <Navigate to="/" replace />
@@ -109,6 +123,13 @@ function App() {
             )
           }
         />
+        {/* <Route
+          exact
+          path="/Privacy"
+          element={
+            authCtx.isLoggedIn ? <Privacy /> : <Navigate to="/" replace />
+          }
+        /> */}
         <Route exact path="*" element={<Error404 />} />
       </Routes>
     </div>

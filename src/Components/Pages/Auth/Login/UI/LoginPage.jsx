@@ -44,7 +44,7 @@ export default function LoginPage() {
             {authCtx.valid ? (
               <></>
             ) : (
-              <h5 className="text-danger text">
+              <h5 className="text-danger text fade-in-text">
                 Invalid userame or password please try again.
               </h5>
             )}

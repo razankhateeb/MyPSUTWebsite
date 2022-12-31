@@ -490,7 +490,7 @@
 .club-img {
   margin-bottom: 20px;
   padding: 20px 0;
-  background-image: url("../../../../img/acm background.png");
+  /* background-image: url("../../../../img/acm background.png"); */
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;

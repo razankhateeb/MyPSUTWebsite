@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import EditForm from "../../EventsDashboard/EditForm.components";
-import SelectParticipantForm from "../../EventsDashboard/selectParticipant.components";
+import SelectParticipantForm from "../../EventsDashboard/selectParticipant.components copy";
 
 export default function CardProjectBox(props) {
   const [modalShow, setModalShow] = useState(false);

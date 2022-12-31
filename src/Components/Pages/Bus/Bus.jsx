@@ -16,13 +16,37 @@ import { CSVLink } from "react-csv";
 import {
   faBusSimple,
   faCircle,
+  faDownload,
+  faEraser,
   faHouse,
   faListUl,
   faPlus,
   faShareAltSquare,
 } from "@fortawesome/free-solid-svg-icons";
+import noResult from "../../../img/bus.gif";
+import template from "../../../templates/Bus_Template.xlsx";
+import { useEffect } from "react";
+import axios from "axios";
+import { useCallback } from "react";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; //
 
 const Bus = () => {
+  const onButtonClick = () => {
+    // using Java Script method to get PDF file
+    fetch("SamplePDF.pdf").then((response) => {
+      response.blob().then((blob) => {
+        // Creating new object of PDF file
+        const fileURL = window.URL.createObjectURL(blob);
+        // Setting various property values
+        let alink = document.createElement("a");
+        alink.href = template;
+        alink.download = "SampleBus.xlsx";
+        alink.click();
+      });
+    });
+  };
+
   const [open, setOpen] = useState(false);
   const [newRouteDialogOpen, setNewRouteDialogOpen] = useState(false);
   const [busStudentDialongOpen, setBusStudentDialogOpen] = useState(false);
@@ -33,6 +57,63 @@ const Bus = () => {
   const [excelExportData, setExcelExportData] = useState([]);
 
   const inputFile = useRef(null);
+
+  const fetchBusHandler = useCallback(async () => {
+    let resopnse = await axios.get("http://localhost:8000/get_All_Bus_Routes", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    try {
+      const data = resopnse.data.map((busStudentsList) => {
+        return busStudentsList;
+      });
+      setBusStudentsList(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const deleteBusHandler = useCallback(async () => {
+    let resopnse = await axios.post(
+      "http://localhost:8000/delete_all_bus_routes",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+    try {
+      fetchBusHandler();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchBusHandler();
+  }, []);
+
+  const resetSemester = () => {
+    confirmAlert({
+      title: "Confirm to Start New Semester",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            deleteBusHandler();
+            fetchBusHandler();
+          },
+        },
+        {
+          label: "No",
+          onClick: () => {},
+        },
+      ],
+    });
+  };
 
   const handleChange = (e) => {
     setFile([...file, e.target.files[0]]);
@@ -104,6 +185,16 @@ const Bus = () => {
                   />
                 </a>
               </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link app-sidebar-link"
+                  onClick={resetSemester}
+                >
+                  <i className="fa-solid fa-house">
+                    <FontAwesomeIcon icon={faEraser} />
+                  </i>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -118,17 +209,31 @@ const Bus = () => {
           <div className="projects-section">
             <div className="projects-section-header">
               <p>Bus Students</p>
+              <p className="time">December, 12</p>
+            </div>
+            <div className="projects-section-line">
+              <div className="projects-status">
+                <div className="item-status">
+                  <span className="status-number">
+                    {busStudentsList.length}
+                  </span>
+                  <span className="status-type">Students</span>
+                </div>
+              </div>
               <div className="view-actions">
                 <button className="view-btn list-view active" title="List View">
                   <i className="fa-solid fa-list-ul">
                     <FontAwesomeIcon icon={faListUl} />
                   </i>
                 </button>
-
+                <button className="btn inside-add" onClick={onButtonClick}>
+                  <FontAwesomeIcon icon={faDownload} />
+                  <span className="plus-icon">Download Template</span>
+                </button>
                 {busStudentsList.length !== 0 ? (
                   <CSVLink
                     style={{ textDecoration: "none" }}
-                    data={excelExportData}
+                    data={busStudentsList}
                     filename={"bus-excel-data.csv"}
                   >
                     <button className="view-btn grid-view" title="Export">
@@ -142,42 +247,49 @@ const Bus = () => {
             </div>
             <div className="projects-section-line"></div>
             <div className="project-boxes jsListView">
-              {busStudentsList.length !== 0
-                ? busStudentsList.map((item, index) => (
-                    <div className="project-box-wrapper " key={index}>
-                      <div className="row bus-project-box justify-content-center">
-                        <div className="col-2">
-                          <div className="row box-content-header">
-                            Routename{" "}
-                          </div>
-                          <div className="row"> {item[5]}</div>
+              {busStudentsList.length !== 0 ? (
+                busStudentsList.map((item) => (
+                  <div className="project-box-wrapper ">
+                    <div className="row bus-project-box justify-content-center">
+                      <div className="col-2">
+                        <div className="row box-content-header">Routename</div>
+                        <div className="row"> {item.route}</div>
+                      </div>
+                      <div className="col-3">
+                        <div className="row box-content-header">
+                          Student ID{" "}
                         </div>
-                        <div className="col-3">
-                          <div className="row box-content-header">
-                            Student Name{" "}
-                          </div>
-                          <div className="row"> {item[7]}</div>
+                        <div className="row"> {item.student_id}</div>
+                      </div>
+                      <div className="col-3">
+                        <div className="row box-content-header">M/W </div>
+                        <div className="row">
+                          Trip A : {item.mon_wed_presence}
                         </div>
-                        <div className="col-3">
-                          <div className="row box-content-header">M/W </div>
-                          <div className="row"> Trip A : {item[1]}</div>
-                          <div className="row"> Trip B : {item[0]}</div>
+                        <div className="row"> Trip B : {item.mon_wed_back}</div>
+                      </div>
+                      <div className="col-2">
+                        <div className="row box-content-header"> S/T/TH</div>
+                        <div className="row" style={{ whiteSpace: "noWrap" }}>
+                          {" "}
+                          Trip A : {item.sun_tue_thu_presence}
                         </div>
-                        <div className="col-2">
-                          <div className="row box-content-header"> S/T/TH</div>
-                          <div className="row" style={{ whiteSpace: "noWrap" }}>
-                            {" "}
-                            Trip A : {item[3]}
-                          </div>
-                          <div className="row" style={{ whiteSpace: "noWrap" }}>
-                            {" "}
-                            Trip B : {item[2]}
-                          </div>
+                        <div className="row" style={{ whiteSpace: "noWrap" }}>
+                          {" "}
+                          Trip B : {item.sun_tue_thu_back}
                         </div>
                       </div>
                     </div>
-                  ))
-                : " No Data Loaded "}
+                  </div>
+                ))
+              ) : (
+                <div className="d-flex flex-column align-items-center mt-5">
+                  <img width="300" height="300" src={noResult} />
+                  <h5 className="mt-3 text-capitalize">
+                    Looks Like there is no Data Available
+                  </h5>
+                </div>
+              )}
             </div>
           </div>
           <div className="messages-section">

@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useRef } from "react";
+import { useCallback } from "react";
 
 const success = () => toast.success("Successfully registered");
 const errormsg = () => toast.error("Oops! An error occurred.");
@@ -12,6 +13,7 @@ export default function CreateTutor(props) {
   const [gpa, setGpa] = useState("");
   const [student, setStudent] = useState("");
   const [year, setYear] = useState("");
+  const [tutors, setTutors] = useState("");
 
   const submitForm = async (event) => {
     // prevents default form as in prevents reload on submit
@@ -60,6 +62,7 @@ export default function CreateTutor(props) {
               <label htmlFor="Event Company Name">
                 <b>Student ID</b>
               </label>
+
               <input
                 type="number"
                 placeholder="Student ID"
@@ -70,20 +73,7 @@ export default function CreateTutor(props) {
                 required
               />
             </div>
-            {/* <div className="col-sm-12 col-lg-6">
-              <label htmlFor="Event Name">
-                <b>Student Name</b>
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Position Name"
-                name="position"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                required
-              />
-            </div> */}
+
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="Event Company Name">
                 <b>Student GPA</b>

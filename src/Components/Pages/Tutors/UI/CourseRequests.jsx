@@ -16,21 +16,17 @@ import Header from "../../../Shared/Header/Header";
 import Footer from "../../../Footer";
 import axios from "axios";
 import TutoringMainProjectBox from "../components/TutoringMainProjectBox";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import CreateCourse from "../components/addCourse";
+import noResult from "../../../../img/tutor.gif";
 
 import "../CSS/tutors.css";
+import CRequests from "../components/cRequest";
 
 export default function CourseRequests() {
-  const navigate = useNavigate();
-  const [modalAddTutoringShow, setModalAddTutoringShow] = useState(false);
-
   const [modalAddCourseShow, setModalAddCourseShow] = useState(false);
+  const [courses, setCourses] = useState([]);
 
-  function toggleShow() {
-    setModalAddTutoringShow(!modalAddTutoringShow);
-  }
-  const [tutoring, setTutoring] = useState([]);
   const [date, setDate] = useState(new Date());
   const months = [
     "January",
@@ -46,24 +42,62 @@ export default function CourseRequests() {
     "November",
     "December",
   ];
-
-  const fetchTutoringHandler = useCallback(async () => {
-    let resopnse = await axios.get("http://localhost:8000/get_All_Courses");
+  const fetchCourseRequestHandler = useCallback(async () => {
+    let resopnse = await axios.get(
+      "http://localhost:8000/get_All_Course_Requests",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
     try {
-      const data = resopnse.data.map((tutoring) => {
-        return tutoring;
+      const data = resopnse.data.map((courses) => {
+        return courses;
       });
-      setTutoring(data);
-      console.log(tutoring);
+      setCourses(data);
     } catch (e) {
       console.log(e);
     }
   }, []);
 
-  useEffect(() => {
-    fetchTutoringHandler();
+  const deleteRequestHandler = useCallback(async (course_requset_id) => {
+    let resopnse = await axios.post(
+      `http://localhost:8000/delete_course_request/${course_requset_id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+    try {
+      fetchCourseRequestHandler();
+    } catch (e) {
+      console.log(e);
+    }
   }, []);
 
+  const acceptRequestHandler = useCallback(async (course) => {
+    let resopnse = await axios.post(
+      // `http://localhost:8000/accept_course_request?course_id=${props.Course_id}&tutor_id=${organizer}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+    try {
+      fetchCourseRequestHandler();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+  useEffect(() => {
+    fetchCourseRequestHandler();
+    deleteRequestHandler();
+  }, []);
   return (
     <>
       <Header />
@@ -73,15 +107,8 @@ export default function CourseRequests() {
             <Link to="/TutorsPage">
               <FontAwesomeIcon icon={faArrowLeft} className="inside-back" />
             </Link>
-            <button
-              className="btn inside-add"
-              onClick={() => setModalAddCourseShow(true)}
-            >
-              <FontAwesomeIcon icon={faSquarePlus} />
-              <span className="plus-icon">Add New Course</span>
-            </button>
           </div>
-          <div className="app-list">
+          <div className="courses app-list">
             <div className="projects-section">
               <div className="projects-section-header">
                 <p>Courses Requests</p>
@@ -93,7 +120,7 @@ export default function CourseRequests() {
               <div className="projects-section-line">
                 <div className="projects-status">
                   <div className="item-status">
-                    <span className="status-number">{tutoring.length}</span>
+                    <span className="status-number">{courses.length}</span>
                     <span className="status-type">Pending Requests</span>
                   </div>
                 </div>
@@ -104,32 +131,38 @@ export default function CourseRequests() {
                   >
                     <FontAwesomeIcon icon={faListUl} />
                   </button>
-                  <button className="view-btn grid-view" title="Export">
-                    <FontAwesomeIcon icon={faShareFromSquare} />
-                  </button>
                 </div>
               </div>
               <div className="project-boxes jsListView">
-                {tutoring.map((value) => {
-                  console.log(value);
-                  return (
-                    <TutoringMainProjectBox
-                      date={value.date}
-                      key={value.course_id}
-                      course_name={value.course_name}
-                    />
-                  );
-                })}
+                {courses.length > 0 ? (
+                  courses.map((value) => {
+                    console.log(value);
+                    return (
+                      <CRequests
+                        date={value.date}
+                        key={value.Course_id}
+                        id={value.Course_id}
+                        course_name={value.Course_Name}
+                        total={value.Total}
+                        decline={deleteRequestHandler}
+                        approve={acceptRequestHandler}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className="d-flex flex-column align-items-center mt-5">
+                    <img width="250" height="250" src={noResult} />
+                    <h5 className="mt-3 text-capitalize">
+                      Looks like there are no current Course Requests available
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </main>
       </div>
-      <CreateCourse
-        show={modalAddCourseShow}
-        onHide={() => setModalAddCourseShow(false)}
-        toggleshow={toggleShow}
-      ></CreateCourse>
+
       <Footer />
     </>
   );

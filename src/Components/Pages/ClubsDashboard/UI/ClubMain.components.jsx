@@ -17,6 +17,7 @@ import axios from "axios";
 import CreateEvent from "../../EventsDashboard/Components/createEvent.components";
 import CreateClub from "../createClub.jsx";
 import EditClub from "../editClub";
+import noResult from "../../../../img/event-alert.gif";
 
 export default function ClubMain() {
   const [modalCreateEventShow, setModalCreateEventShow] = useState(false);
@@ -117,16 +118,25 @@ export default function ClubMain() {
                 </div>
               </div>
               <div className="project-boxes jsListView">
-                {clubsEvents.map((value) => (
-                  <ClubProjectBox
-                    key={value.event_id}
-                    date={value.start_date}
-                    eventName={value.event_name}
-                    clubName={value.club_name}
-                    startTime={value.start_time}
-                    endTime={value.end_time}
-                  />
-                ))}
+                {clubsEvents.length > 0 ? (
+                  clubsEvents.map((value) => (
+                    <ClubProjectBox
+                      key={value.event_id}
+                      date={value.start_date}
+                      eventName={value.event_name}
+                      clubName={value.club_name}
+                      startTime={value.start_time}
+                      endTime={value.end_time}
+                    />
+                  ))
+                ) : (
+                  <div className="d-flex flex-column align-items-center mt-5">
+                    <img width="300" height="300" src={noResult} />
+                    <h5 className="mt-3 text-capitalize">
+                      Looks like there are no current events available
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
             <div className="messages-section">

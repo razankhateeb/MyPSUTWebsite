@@ -504,12 +504,8 @@ input[type="checkbox"] {
 .tutoring .inside-back {
   color: var(--main-color);
 }
-.tutoring .inside-add {
-  background-color: var(--link-color-active-bg);
-  color: var(--link-color-active);
-  font-weight: 600;
-}
 
-.tutoring .inside-add .plus-icon {
-  margin-left: 10px;
+.tutors .projects-section,
+.courses .projects-section {
+  height: 70vh;
 }

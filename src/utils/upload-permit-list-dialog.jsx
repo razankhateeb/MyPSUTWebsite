@@ -6,11 +6,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { ExcelRenderer } from "react-excel-renderer";
+import axios from "axios";
 
 const UploadPermitListDialog = ({
   open,
   handleClose,
   retrieveExcelSheetData,
+  fetchPermitHandler,
 }) => {
   const [excelFile, setExcelFile] = useState(null);
 
@@ -20,16 +22,39 @@ const UploadPermitListDialog = ({
     setExcelFile(fileObj);
   };
 
-  const confirmUploadExcel = () => {
-    if (excelFile === undefined || excelFile === null) return alert("please select a file ");
-    ExcelRenderer(excelFile, (err, resp) => {
-      if (err) {
-        console.log(err);
-      } else {
-        retrieveExcelSheetData(resp.rows);
-        handleClose();
-      }
-    });
+  const confirmUploadExcel = async () => {
+    if (excelFile === undefined || excelFile === null)
+      return alert("please select a file ");
+
+    // using Java Script method to get PDF file
+    const request = new FormData();
+    request.append("file", excelFile);
+    await axios
+      .post(`http://localhost:8000/upload_permit_holders`, request, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          fetchPermitHandler();
+          handleClose();
+          // success();
+          // props.onHide();
+          // props.fetchUsersHandler();
+        }
+      })
+      .catch((error) => {
+        // errormsg();
+      });
+    // ExcelRenderer(excelFile, (err, resp) => {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     retrieveExcelSheetData(resp.rows);
+    //     handleClose();
+    //   }
+    // });
   };
 
   return (

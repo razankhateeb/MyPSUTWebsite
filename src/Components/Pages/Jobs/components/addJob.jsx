@@ -2,24 +2,19 @@ import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { useRef } from "react";
 
 const success = () => toast.success("Successfully registered");
 const errormsg = () => toast.error("Oops! An error occurred.");
 
 export default function CreateJob(props) {
-  // const [modalAddJobShow, setModalAddJobShow] = useState(false);
-
-  const position = useRef("");
-  const company = useRef("");
-  // const [position, setPosition] = useState("");
-  // const [company, setCompany] = useState("");
+  const [position, setPosition] = useState("");
+  const [company, setCompany] = useState("");
   const [major, setMajor] = useState("");
   const [deadline, setDeadline] = useState("");
   const [description, setDescription] = useState("");
-  const [condition, setCondition] = useState("");
   const [resposibility, setResposibility] = useState("");
   const [image, setImage] = useState("");
+  const [requirements, setRequirements] = useState("");
 
   const submitForm = async (event) => {
     // prevents default form as in prevents reload on submit
@@ -29,30 +24,24 @@ export default function CreateJob(props) {
     //axios helps to send post
     await axios
       .post(
-        `http://localhost:8000/create_job?job_title=${position.current.value}&company_name=${company.current.value}&college=${major}&job_responsanbilities=${resposibility}&job_requierments=${condition}&job_Deadline=${deadline}&job_description=${description}`,
-        request
+        `http://localhost:8000/create_job?job_title=${position}&company_name=${company}&college=${major}&job_responsanbilities=${resposibility}&job_requierments=${requirements}&job_Deadline=${deadline}&job_description=${description}`,
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
       )
       .then((response) => {
         if (response.status === 200) {
           success();
-          resetForm();
+          props.onHide();
+          props.fetchJobsHandler();
         }
       })
       .catch((error) => {
         errormsg();
       });
-  };
-
-  const resetForm = () => {
-    position.current.value = "";
-    company.current.value = "";
-
-    // setPosition("");
-    // setCompany("");
-    setMajor("");
-    setDeadline("");
-    setDescription("");
-    setCondition("");
   };
 
   return (
@@ -79,10 +68,9 @@ export default function CreateJob(props) {
                 type="text"
                 placeholder="Enter Position Name"
                 name="position"
-                ref={position}
-                // onChange={(e) => {
-                //   setPosition(e.target.value);
-                // }}
+                onChange={(e) => {
+                  setPosition(e.target.value);
+                }}
                 required
               />
             </div>
@@ -94,10 +82,9 @@ export default function CreateJob(props) {
                 type="text"
                 placeholder="Enter Company Name"
                 name="company"
-                ref={company}
-                // onChange={(e) => {
-                //   setCompany(e.target.value);
-                // }}
+                onChange={(e) => {
+                  setCompany(e.target.value);
+                }}
                 required
               />
             </div>
@@ -108,7 +95,7 @@ export default function CreateJob(props) {
               <input
                 type="file"
                 placeholder="Filename"
-                accept="image/x-png,image/gif,image/jpeg,image/jpg"
+                accept="image/png,image/jpeg,image/jpg"
                 onChange={(e) => {
                   setImage(e.target.files[0]);
                 }}
@@ -128,7 +115,9 @@ export default function CreateJob(props) {
                 }}
                 required
               >
-                <option value={"Any"}>Any</option>
+                <option value={"Any"} defaultValue disabled>
+                  Any
+                </option>
                 <option value={"Faculty of Computing Sciences"}>
                   King Hussein Faculty of Computing Sciences
                 </option>
@@ -156,14 +145,14 @@ export default function CreateJob(props) {
               />
             </div>
             <div className="col-sm-12 col-lg-4">
-              <label htmlFor="Conditions">
-                <b>Conditions</b>
+              <label htmlFor="requirements">
+                <b>Job Requirements</b>
               </label>
               <textarea
                 rows="6"
-                placeholder="Job Conditions"
+                placeholder="Job Responsibility"
                 onChange={(e) => {
-                  setCondition(e.target.value);
+                  setRequirements(e.target.value);
                 }}
                 required
               ></textarea>

@@ -6,7 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 
-const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
+const PermitDataDialog = ({ open, handleClose, selectedPermit, data }) => {
   useEffect(() => {
     console.log(selectedPermit);
   }, [selectedPermit]);
@@ -16,7 +16,7 @@ const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Permit Details</DialogTitle>
         <DialogContent>
-          <DialogContentText className="form-container" component={'span'}>
+          <DialogContentText className="form-container" component={"span"}>
             <div className="row">
               <div className="col-sm-12 col-md-6">
                 <label>
@@ -24,8 +24,7 @@ const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
                 </label>
                 <input
                   type="number"
-                  placeholder="273"
-                  defaultValue={selectedPermit[6]}
+                  placeholder={data.permit_number}
                   name="email"
                   disabled
                 />
@@ -34,7 +33,12 @@ const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
                 <label>
                   <b>Permit Type</b>
                 </label>
-                <input type="Text" placeholder="IT" name="email" disabled />
+                <input
+                  type="Text"
+                  placeholder={data.colleage}
+                  name="email"
+                  disabled
+                />
               </div>
               <div className="col-sm-12 col-md-6">
                 <label>
@@ -42,8 +46,7 @@ const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Student Name"
-                  defaultValue={selectedPermit[5]}
+                  placeholder={data.student_name}
                   name="email"
                   disabled
                 />
@@ -54,9 +57,8 @@ const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
                 </label>
                 <input
                   type="number"
-                  placeholder="0790872936"
                   name="email"
-                  defaultValue={selectedPermit[0]}
+                  defaultValue={data.phone_number}
                   disabled
                 />
               </div>
@@ -65,29 +67,22 @@ const PermitDataDialog = ({ open, handleClose, selectedPermit }) => {
                   <b>Licsence Plate</b>
                 </label>
                 <input
-                  type="number"
-                  placeholder="36-51923"
                   name="email"
-                  defaultValue={selectedPermit[2]}
-                  required
+                  placeholder={data.license_number}
+                  disabled
                 />
               </div>
               <div className="col-sm-12 col-md-6">
                 <label>
                   <b>Car Type</b>
                 </label>
-                <input
-                  type="text"
-                  placeholder="Toyota"
-                  required
-                  defaultValue={selectedPermit[3]}
-                />
+                <input type="text" disabled placeholder={data.car_type} />
               </div>
               <div className="col-sm-12 col-md-6">
                 <label>
                   <b>Car Model</b>
                 </label>
-                <input type="text" placeholder="Camry" required />
+                <input type="text" placeholder={data.car_color} />
               </div>
             </div>
           </DialogContentText>

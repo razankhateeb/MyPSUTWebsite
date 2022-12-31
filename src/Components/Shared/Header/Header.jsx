@@ -7,6 +7,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import Search from "./Search";
 import AuthContext from "../../../Auth/authContext";
+import logo from "../../../img/logo.png";
 
 function HeaderComponent() {
   const authCtx = useContext(AuthContext);
@@ -25,7 +26,9 @@ function HeaderComponent() {
       <div className="container">
         <div className="app-header container-fluid">
           <div className="app-header-left">
-            <span className="app-icon"> </span>
+            <span className="app-icon">
+              <img width="25" height="30" src={logo} />
+            </span>
             <a className="app-name" title="Home">
               MyPSUTWebApp
             </a>

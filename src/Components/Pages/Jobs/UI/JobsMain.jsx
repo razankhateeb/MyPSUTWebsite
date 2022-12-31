@@ -11,12 +11,14 @@ import "../css/jobs.css";
 import Header from "../../../Shared/Header/Header";
 import Footer from "../../../Footer";
 import axios from "axios";
+import noResult from "../../../../img/job.gif";
+import { CSVLink } from "react-csv";
 
 export default function JobsMain() {
   const [modalAddJobShow, setModalAddJobShow] = useState(false);
 
-  function toggleShow() {
-    setModalAddJobShow(!modalAddJobShow);
+  function CloseAdd() {
+    setModalAddJobShow(false);
   }
   const [jobs, setJobs] = useState([]);
   const [date, setDate] = useState(new Date());
@@ -36,13 +38,16 @@ export default function JobsMain() {
   ];
 
   const fetchJobsHandler = useCallback(async () => {
-    let resopnse = await axios.get("http://localhost:8000/get_All_Jobs");
+    let resopnse = await axios.get("http://localhost:8000/get_All_Jobs", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
     try {
       const data = resopnse.data.map((job) => {
         return job;
       });
       setJobs(data);
-      console.log(jobs);
     } catch (e) {
       console.log(e);
     }
@@ -98,28 +103,48 @@ export default function JobsMain() {
                   >
                     <FontAwesomeIcon icon={faListUl} />
                   </button>
-                  <button className="view-btn grid-view" title="Export">
-                    <FontAwesomeIcon icon={faShareFromSquare} />
-                  </button>
+                  {/* export excel sheet of data */}
+                  <CSVLink
+                    style={{ textDecoration: "none" }}
+                    data={jobs}
+                    filename={"Jobs_Report.csv"}
+                  >
+                    <button className="view-btn grid-view" title="Export">
+                      <i className="fa-regular fa-share-from-square">
+                        <FontAwesomeIcon icon={faShareFromSquare} />
+                      </i>
+                    </button>
+                  </CSVLink>
                 </div>
               </div>
               <div className="project-boxes jsListView">
-                {jobs.map((value) => {
-                  return (
-                    <JobsProjectBox
-                      date={value.date}
-                      key={value.job_id}
-                      position={value.job_title}
-                      company={value.company_name}
-                      major={value.college}
-                      spec={value.desc}
-                      deadline={value.job_Deadline}
-                      condition={value.condition}
-                      req={value.req}
-                      image={value.job_icon_image}
-                    />
-                  );
-                })}
+                {jobs.length > 0 ? (
+                  jobs.map((value) => {
+                    return (
+                      <JobsProjectBox
+                        fetchJobsHandler={fetchJobsHandler}
+                        id={value.job_id}
+                        date={value.date}
+                        key={value.job_id}
+                        position={value.job_title}
+                        company={value.company_name}
+                        major={value.college}
+                        description={value.job_description}
+                        deadline={value.job_Deadline}
+                        responsibility={value.job_responsanbilities}
+                        requirements={value.job_requierments}
+                        image={value.job_icon_image}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className="d-flex flex-column align-items-center mt-5">
+                    <img width="300" height="300" src={noResult} />
+                    <h5 className="mt-3 text-capitalize">
+                      Looks like there are no current Jobs available
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -127,7 +152,8 @@ export default function JobsMain() {
       </div>
       <AddJob
         show={modalAddJobShow}
-        onHide={() => setModalAddJobShow(false)}
+        onHide={CloseAdd}
+        fetchJobsHandler={fetchJobsHandler}
       ></AddJob>
       <Footer />
     </>

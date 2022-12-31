@@ -3,11 +3,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import EditForm from "../components/EditJob";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { useCallback } from "react";
 
 export default function JobsProjectBox(props) {
   const [modalShow, setModalShow] = useState(false);
-  const [modalJobShow, setModalJobShow] = useState(false);
-
+  function CloseAdd() {
+    setModalShow(false);
+  }
+  const deleteJobsHandler = useCallback(async (job_id) => {
+    let resopnse = await axios.post(
+      `http://localhost:8000/delete_job/${job_id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+    try {
+      console.log(resopnse);
+      props.fetchJobsHandler();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
   return (
     <div className="project-box-wrapper">
       <div className="project-box">
@@ -21,7 +41,10 @@ export default function JobsProjectBox(props) {
               <FontAwesomeIcon icon={faPen} />
             </button>
 
-            <button className="project-btn-more">
+            <button
+              className="project-btn-more"
+              onClick={() => deleteJobsHandler(props.id)}
+            >
               <FontAwesomeIcon icon={faTrash} color="#ea6564" />
             </button>
           </div>
@@ -41,14 +64,19 @@ export default function JobsProjectBox(props) {
         </div>
         <div className="project-box-content-header">
           <p className="box-content-header">{props.major}</p>
-          <p className="box-content-subheader">{props.desc}</p>
+          <p className="box-content-subheader">{props.description}</p>
         </div>
         <div className="project-box-content-header">
           <p className="box-content-header">{props.deadline}</p>
           <p className="box-content-subheader">{props.req}</p>
         </div>
       </div>
-      <EditForm show={modalShow} onHide={() => setModalShow(false)} />
+      <EditForm
+        fetchJobsHandler={props.fetchJobsHandler}
+        data={props}
+        show={modalShow}
+        onHide={CloseAdd}
+      />
       {/* <SelectParticipantForm
         show={modalJobShow}
         onHide={() => setModalJobShow(false)}

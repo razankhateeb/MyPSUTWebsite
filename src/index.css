@@ -651,3 +651,144 @@ form h5 {
     transform: none;
   }
 }
+
+.popups-headers {
+  font-weight: bold;
+  font-size: 25;
+  color: var(--main-color);
+}
+
+.fade-in-text {
+  animation: fadeIn 5s;
+  -webkit-animation: fadeIn 5s;
+  -moz-animation: fadeIn 5s;
+  -o-animation: fadeIn 5s;
+  -ms-animation: fadeIn 5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.inside-add {
+  background-color: var(--link-color-active-bg);
+  color: var(--link-color-active);
+  font-weight: 600;
+  margin-left: 10px;
+  padding: 7px;
+}
+.inside-add .plus-icon {
+  margin: 0 10px;
+}
+.inside-add:hover {
+  border-color: var(--link-color-active-bg);
+  font-weight: 700;
+  padding: 7px 10px;
+  box-shadow: 0 2px 6px 0 rgba(136, 148, 171, 0.2),
+    0 24px 20px -24px rgba(71, 82, 107, 0.1);
+}
+
+.switch-field {
+  display: flex;
+  margin-bottom: 36px;
+  overflow: hidden;
+  height: 50%;
+  align-items: center;
+}
+
+.switch-field input {
+  position: absolute !important;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  width: 1px;
+  border: 0;
+  overflow: hidden;
+}
+
+.switch-field label {
+  background-color: #e4e4e4;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  padding: 16px 60px;
+  margin-right: -1px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+  cursor: pointer;
+}
+
+.switch-field input:checked + label,
+.switch-field input .checked {
+  background-color: #a5dc86;
+  box-shadow: none;
+}
+
+.switch-field label .first {
+  border-radius: 4px 0 0 4px;
+}
+
+.switch-field label .second {
+  border-radius: 0 4px 4px 0;
+}
+
+.btn-state {
+  background-color: #04aa6d;
+  color: white;
+  padding: 6px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 6px;
+  opacity: 0.8;
+  text-transform: capitalize;
+}
+
+.btn-state.reject {
+  background-color: #ea6564;
+}

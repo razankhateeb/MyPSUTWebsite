@@ -1,32 +1,25 @@
-import {
-  faArrowLeft,
-  faBackward,
-  faChalkboardTeacher,
-  faChevronRight,
-  faFileLines,
-  faHouse,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
-import SideBar from "../../../SideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl } from "@fortawesome/free-solid-svg-icons/faListUl";
 import { faShareFromSquare } from "@fortawesome/free-regular-svg-icons/faShareFromSquare";
 import { useCallback, useEffect, useState } from "react";
 import Header from "../../../Shared/Header/Header";
 import Footer from "../../../Footer";
-import axios from "axios";
-import TutoringMainProjectBox from "../components/TutoringMainProjectBox";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import noResult from "../../../../img/tutor.gif";
 
 import "../CSS/tutors.css";
 import CreateTutor from "../components/addTutor";
+import TRequest from "../components/tRequest";
+import axios from "axios";
 
-export default function TutorRequests() {
-  const navigate = useNavigate();
-  const [modalAddTutoringShow, setModalAddTutoringShow] = useState(false);
+export default function TutorRequests(props) {
+  const location = useLocation();
   const [modalCreateTutorShow, setModalCreateTutorShow] = useState(false);
+  const [tutoringRequests, setTutoringRequests] = useState([]);
+  const [tlist, setTutors] = useState("");
 
-  const [tutoring, setTutoring] = useState([]);
   const [date, setDate] = useState(new Date());
   const months = [
     "January",
@@ -43,21 +36,62 @@ export default function TutorRequests() {
     "December",
   ];
 
-  const fetchTutoringHandler = useCallback(async () => {
-    let resopnse = await axios.get("http://localhost:8000/get_All_Courses");
+  const fetchTutoringRequestsHandler = useCallback(async () => {
+    let resopnse = await axios.get(
+      "http://localhost:8000/get_All_Tutor_Requests",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
     try {
-      const data = resopnse.data.map((tutoring) => {
-        return tutoring;
+      const data = resopnse.data.map((tutoringRequests) => {
+        return tutoringRequests;
       });
-      setTutoring(data);
-      console.log(tutoring);
+
+      setTutoringRequests(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+  const deleteRequestHandler = useCallback(async (tutor_request_id) => {
+    let resopnse = await axios.post(
+      `http://localhost:8000/delete_tutor_request/${tutor_request_id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+    try {
+      fetchTutoringRequestsHandler();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  const acceptRequestHandler = useCallback(async (tutor_request_id) => {
+    let resopnse = await axios.post(
+      `http://localhost:8000/accept_tutor_request/${tutor_request_id}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
+    try {
+      fetchTutoringRequestsHandler();
     } catch (e) {
       console.log(e);
     }
   }, []);
 
   useEffect(() => {
-    fetchTutoringHandler();
+    deleteRequestHandler();
+    fetchTutoringRequestsHandler();
   }, []);
 
   return (
@@ -69,15 +103,15 @@ export default function TutorRequests() {
             <Link to="/TutorsPage">
               <FontAwesomeIcon icon={faArrowLeft} className="inside-back" />
             </Link>
-            <button
+            {/* <button
               className="btn inside-add"
               onClick={() => setModalCreateTutorShow(true)}
             >
               <FontAwesomeIcon icon={faSquarePlus} />
               <span className="plus-icon">Add New Tutor</span>
-            </button>
+            </button> */}
           </div>
-          <div className="app-list">
+          <div className="tutors app-list">
             <div className="projects-section">
               <div className="projects-section-header">
                 <p>Tutor Requests</p>
@@ -90,7 +124,9 @@ export default function TutorRequests() {
               <div className="projects-section-line">
                 <div className="projects-status">
                   <div className="item-status">
-                    <span className="status-number">{tutoring.length}</span>
+                    <span className="status-number">
+                      {tutoringRequests.length}
+                    </span>
                     <span className="status-type">Pending Requests</span>
                   </div>
                 </div>
@@ -101,22 +137,36 @@ export default function TutorRequests() {
                   >
                     <FontAwesomeIcon icon={faListUl} />
                   </button>
-                  <button className="view-btn grid-view" title="Export">
-                    <FontAwesomeIcon icon={faShareFromSquare} />
-                  </button>
                 </div>
               </div>
               <div className="project-boxes jsListView">
-                {tutoring.map((value) => {
-                  console.log(value);
-                  return (
-                    <TutoringMainProjectBox
-                      date={value.date}
-                      key={value.course_id}
-                      course_name={value.course_name}
-                    />
-                  );
-                })}
+                {tutoringRequests.length > 0 ? (
+                  tutoringRequests.map((value) => {
+                    return (
+                      <TRequest
+                        date={value.date}
+                        key={value.tutor_request_id}
+                        tid={value.tutor_request_id}
+                        cid={value.course_id}
+                        sid={value.student_id}
+                        rid={value.tutor_request_id}
+                        course_name={value.course_name}
+                        s_name={value.Student_Name}
+                        grade={value.grade}
+                        semester={value.semester_completion}
+                        decline={deleteRequestHandler}
+                        accept={acceptRequestHandler}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className="d-flex flex-column align-items-center mt-5">
+                    <img width="300" height="300" src={noResult} />
+                    <h5 className="mt-3 text-capitalize">
+                      Looks like there are no current Tutor Requests available
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -125,6 +175,7 @@ export default function TutorRequests() {
       <CreateTutor
         show={modalCreateTutorShow}
         onHide={() => setModalCreateTutorShow(false)}
+        tutorslist={tlist}
       ></CreateTutor>
       <Footer />
     </>

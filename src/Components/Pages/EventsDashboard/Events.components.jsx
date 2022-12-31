@@ -10,22 +10,48 @@ import Header from "../../Shared/Header/Header";
 import "./CSS/event.css";
 import { useCallback, useEffect, useState } from "react";
 import CreateEvent from "./Components/createEvent.components";
-import SelectParticipantForm from "./selectParticipant.components";
+import MoreParticipantsForm from "./moreParticipant.components";
+import ProjectBox from "./projectBox.components";
+import axios from "axios";
+import SelectParticipantForm from "./selectParticipant.components copy";
+import { CSVLink } from "react-csv";
 
 export default function EventMain() {
   const [modalCreateEventShow, setModalCreateEventShow] = useState(false);
   const [events, setEvents] = useState([]);
   const [modalOrganizer, setModalOrganizer] = useState(false);
+  const [org, setOrgs] = useState([]);
+  function CloseAdd() {
+    setModalCreateEventShow(false);
+  }
+  const fetchOrgsHandler = useCallback(async () => {
+    let resopnse = await axios.get("http://localhost:8000/get_All_Organizers", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+    try {
+      const data = resopnse.data.map((org) => {
+        return org;
+      });
+      setOrgs(data);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   const fetchEventHandler = useCallback(async () => {
-    let resopnse = await fetch("http://localhost:8000/get_All_Events");
+    let resopnse = await fetch("http://localhost:8000/get_All_Events", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
     try {
       resopnse.json().then((value) => {
         const data = value.map((eve) => {
           return eve;
         });
         setEvents(data);
-        console.log(events);
       });
     } catch (e) {
       console.log(e);
@@ -34,7 +60,8 @@ export default function EventMain() {
 
   useEffect(() => {
     fetchEventHandler();
-  }, [fetchEventHandler]);
+    fetchOrgsHandler();
+  }, []);
 
   const [date, setDate] = useState(new Date());
   const months = [
@@ -102,17 +129,40 @@ export default function EventMain() {
                       <FontAwesomeIcon icon={faListUl}></FontAwesomeIcon>{" "}
                     </i>
                   </button>
-                  <button className="view-btn grid-view" title="Export">
-                    <i>
-                      <FontAwesomeIcon
-                        icon={faShareFromSquare}
-                      ></FontAwesomeIcon>{" "}
-                    </i>
-                  </button>
+                  <CSVLink
+                    style={{ textDecoration: "none" }}
+                    data={events}
+                    filename={"Events_Report.csv"}
+                  >
+                    <button className="view-btn grid-view" title="Export">
+                      <i className="fa-regular fa-share-from-square">
+                        <FontAwesomeIcon icon={faShareFromSquare} />
+                      </i>
+                    </button>
+                  </CSVLink>
                 </div>
               </div>
               <div className="project-boxes jsListView">
-                <ProjectBoxList eventsProp={events} />
+                {events.map((value) => {
+                  return (
+                    <ProjectBox
+                      fetchEventHandler={fetchEventHandler}
+                      id={value.event_id}
+                      key={value.event_id}
+                      date={value.date}
+                      name={value.event_name}
+                      location={value.location}
+                      sDate={value.start_date}
+                      eDate={value.end_date}
+                      sTime={value.start_time}
+                      eTime={value.end_time}
+                      description={value.description}
+                      image={value.event_image}
+                      organizers={value.organizers}
+                      org_list={org}
+                    />
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -120,7 +170,9 @@ export default function EventMain() {
       </div>
       <CreateEvent
         show={modalCreateEventShow}
-        onHide={() => setModalCreateEventShow(false)}
+        onHide={CloseAdd}
+        fetchEventHandler={fetchEventHandler}
+        organizers={org}
       ></CreateEvent>
       <SelectParticipantForm
         show={modalOrganizer}

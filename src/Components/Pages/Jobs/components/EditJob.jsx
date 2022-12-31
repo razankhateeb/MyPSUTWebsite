@@ -4,16 +4,19 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const success = () => toast.success("Successfully registered");
-const error = () => toast.error("Oops! An error occurred.");
+const errormsg = () => toast.error("Oops! An error occurred.");
 
 export default function EditJob(props) {
-  const [position, setPosition] = useState("");
-  const [company, setCompany] = useState("");
-  const [major, setMajor] = useState("");
-  const [deadline, setDeadline] = useState("");
-  const [description, setDescription] = useState("");
-  const [condition, setCondition] = useState("");
-  const [resposibility, setResposibility] = useState("");
+  console.log(props.data.req);
+  const [position, setPosition] = useState(props.data.position);
+  const [company, setCompany] = useState(props.data.company);
+  const [major, setMajor] = useState(props.data.major);
+  const [deadline, setDeadline] = useState(props.data.deadline);
+  const [description, setDescription] = useState(props.data.description);
+  const [responsibility, setResponsibility] = useState(
+    props.data.responsibility
+  );
+  const [requirements, setRequirements] = useState(props.data.requirements);
   const [image, setImage] = useState("");
 
   const submitForm = async (event) => {
@@ -22,22 +25,27 @@ export default function EditJob(props) {
     const request = new FormData();
     request.append("job_image", image);
     //axios helps to send post
-    await axios.post(
-      `http://localhost:8000/create_job?job_title=${position}&company_name=${company}&college=${major}&job_responsanbilities=${resposibility}&job_requierments=${condition}&job_Deadline=${deadline}&job_description=${description}`,
-      request
-    );
+    await axios
+      .post(
+        `http://localhost:8000/job_id/${props.data.id}?job_title=${position}&company_name=${company}&college=${major}&job_responsanbilities=${responsibility}&job_requierments=${responsibility}&job_Deadline=${deadline}&job_description=${description}`,
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          props.fetchJobsHandler();
+          props.onHide();
+          success();
+        }
+      })
+      .catch((error) => {
+        errormsg();
+      });
   };
-
-  function fileSelectedChanged(obj) {
-    var filePath = obj.value;
-
-    var ext = filePath.substring(filePath.lastIndexOf(".") + 1).toLowerCase();
-    if (ext !== "csv") {
-      alert("Only files with the file extension CSV are allowed");
-    } else {
-      document.getElementById("form1").submit();
-    }
-  }
 
   return (
     <Modal
@@ -87,8 +95,7 @@ export default function EditJob(props) {
               </label>
               <input
                 type="file"
-                value={image}
-                accept="image/x-png,image/gif,image/jpeg,image/jpg"
+                accept="image/png,image/jpeg,image/jpg"
                 onChange={(e) => {
                   setImage(e.target.files[0]);
                 }}
@@ -99,19 +106,27 @@ export default function EditJob(props) {
                 <b>Major</b>
               </label>
               <select
+                className="form-select"
+                value={`${major}`}
                 list="major_list"
-                value={major}
+                placeholder="Select Major"
                 name="major"
                 onChange={(e) => {
                   setMajor(e.target.value);
                 }}
               >
-                <option value="none" selected disabled hidden>
-                  Select a College
+                <option value={"Any"} selected disabled>
+                  Any
                 </option>
-                <option value={"IT"}>IT</option>
-                <option value={"Engineering"}>Engineering</option>
-                <option value={"Business"}>Business</option>
+                <option value={"Faculty of Computing Sciences"}>
+                  King Hussein Faculty of Computing Sciences
+                </option>
+                <option value={"Faculty of Engineering"}>
+                  King Abdullah II Faculty of Engineering
+                </option>
+                <option value={"School of Business Technology"}>
+                  King Talal School of Business Technology
+                </option>
               </select>
             </div>
             <div className="col-sm-12 col-lg-6">
@@ -129,27 +144,27 @@ export default function EditJob(props) {
               />
             </div>
             <div className="col-sm-12 col-lg-4">
-              <label htmlFor="Conditions">
-                <b>Conditions</b>
+              <label htmlFor="responsibility">
+                <b>Job Responsibility</b>
               </label>
               <textarea
                 rows="6"
-                value={condition}
+                value={responsibility}
                 onChange={(e) => {
-                  setCondition(e.target.value);
+                  setResponsibility(e.target.value);
                 }}
               ></textarea>
             </div>
 
             <div className="col-sm-12 col-lg-4">
               <label htmlFor="Start Time">
-                <b>Job Responsibilities</b>
+                <b>Job Requirements</b>
               </label>
               <textarea
                 rows="6"
-                value={resposibility}
+                value={requirements}
                 onChange={(e) => {
-                  setResposibility(e.target.value);
+                  setRequirements(e.target.value);
                 }}
               ></textarea>
             </div>

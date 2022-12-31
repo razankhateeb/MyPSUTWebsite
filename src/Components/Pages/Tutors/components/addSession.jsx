@@ -31,7 +31,8 @@ export default function CreateSession(props) {
       .then((response) => {
         if (response.status === 200) {
           success();
-          resetForm();
+          props.onHide();
+          props.fetchSessionsHandler();
         }
       })
       .catch((error) => {
@@ -51,40 +52,53 @@ export default function CreateSession(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          <h5>Add New Course</h5>
+          <h5>Add New Course Session</h5>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form action="" className="form-container">
           <div className="row">
             <div className="col-sm-12 col-lg-6">
-              <label htmlFor="Event Name">
-                <b>Course ID</b>
+              <label htmlFor="Main_Organizer">
+                <b>Course ID </b>
               </label>
-              <input
-                type="number"
-                placeholder="Enter Position Name"
-                name="position"
-                onChange={(e) => {
-                  setCourseId(e.target.value);
-                }}
-                required
-              />
+              <select
+                className="form-select"
+                onChange={(e) => setCourseId(e.target.value)}
+              >
+                <option value={"Any"} selected disabled>
+                  Any
+                </option>
+                {props.courses.map((value) => {
+                  return (
+                    <option value={value.course_id}>
+                      {value.course_id} | {value.course_name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className="col-sm-12 col-lg-6">
-              <label htmlFor="Event Name">
-                <b>Student ID</b>
+              <label htmlFor="Main_Organizer">
+                <b>Tutor ID </b>
               </label>
-              <input
-                type="number"
-                placeholder="Enter Position Name"
-                name="position"
-                onChange={(e) => {
-                  setStudent(e.target.value);
-                }}
-                required
-              />
+              <select
+                className="form-select"
+                onChange={(e) => setStudent(e.target.value)}
+              >
+                <option value={"Any"} selected disabled>
+                  Any
+                </option>
+                {props.organizers.map((value) => {
+                  return (
+                    <option value={value.tutor_id}>
+                      {value.tutor_id} | {value.tutor_name}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
+
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="Event Name">
                 <b>Day</b>
@@ -136,7 +150,7 @@ export default function CreateSession(props) {
 
             <div className="col-12">
               <button type="button" className="btn" onClick={submitForm}>
-                Create Job
+                Create Session
               </button>
             </div>
           </div>
