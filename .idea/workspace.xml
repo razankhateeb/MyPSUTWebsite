@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="63b7fb6b-f5b9-4201-83e8-b03d407da01e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Components/Body.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Components/MainDiv.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Components/SideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CSS/jobs.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/CSS/jobs.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Body.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Footer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/MainDiv.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/NavItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/NavItem.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Pages/Jobs/UI/JobBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Pages/Jobs/UI/JobBox.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Header/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Header/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Header/Search.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Header/Search.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Messages/MessageBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Messages/MessageBox.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Messages/MessagesHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Messages/MessagesHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Messages/SideMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Messages/SideMenu.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Project/ProjectBox.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Project/ProjectBox.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/Shared/Project/ProjectHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Shared/Project/ProjectHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/SideBar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2H8DfCDR4Z4z6b5iHVogErXxZwH" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/osama/Desktop/Development Files/Grad Project/MyPSUTWebsite&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Components/EventsDashboard" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="63b7fb6b-f5b9-4201-83e8-b03d407da01e" name="Changes" comment="" />
+      <created>1667657918555</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1667657918555</updated>
+      <workItem from="1667657920525" duration="1869000" />
+      <workItem from="1667659800254" duration="19721000" />
+      <workItem from="1667755064154" duration="330000" />
+      <workItem from="1667807316292" duration="417000" />
+      <workItem from="1667878526215" duration="548000" />
+      <workItem from="1667891348938" duration="682000" />
+      <workItem from="1667892163568" duration="229000" />
+      <workItem from="1667892400243" duration="1466000" />
+      <workItem from="1667911477593" duration="205000" />
+      <workItem from="1667923980640" duration="2860000" />
+      <workItem from="1668006674218" duration="3318000" />
+      <workItem from="1668074677999" duration="20438000" />
+      <workItem from="1668186694724" duration="2554000" />
+      <workItem from="1668195170967" duration="67000" />
+      <workItem from="1668239993399" duration="3163000" />
+      <workItem from="1668271620634" duration="599000" />
+      <workItem from="1668367279698" duration="599000" />
+      <workItem from="1668493959162" duration="144000" />
+      <workItem from="1668503280507" duration="218000" />
+      <workItem from="1668504202701" duration="1744000" />
+      <workItem from="1668520970964" duration="7327000" />
+      <workItem from="1668575481017" duration="14000" />
+      <workItem from="1669216724939" duration="149000" />
+      <workItem from="1669220501326" duration="56000" />
+      <workItem from="1669360513378" duration="19432000" />
+      <workItem from="1669447450598" duration="2808000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

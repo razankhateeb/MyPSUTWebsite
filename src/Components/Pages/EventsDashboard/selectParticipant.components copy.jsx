@@ -1,0 +1,96 @@
+import { Modal } from "react-bootstrap";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useState } from "react";
+
+const success = () => toast.success("Successfully registered");
+const errormsg = () => toast.error("Oops! An error occurred.");
+
+export default function SelectParticipantForm(props) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+
+  const submitForm = async (event) => {
+    // prevents default form as in prevents reload on submit
+    event.preventDefault();
+    const request = new FormData();
+    request.append("org_image", image);
+    //axios helps to send post
+    await axios
+      .post(
+        `http://localhost:8000/create_Organizer?organizer_name=${name}`,
+        request,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          success();
+          props.onHide();
+          props.fetchOrgsHandler();
+        }
+      })
+      .catch((error) => {
+        errormsg();
+      });
+  };
+
+  return (
+    <Modal
+      {...props}
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>
+          <h5>Create New Organizer</h5>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="form-container">
+          <div className="row">
+            <div className="row other-participants">
+              <div className="col-sm-12">
+                <label for="Club Club Event Name">
+                  <b>Organizer Name</b>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Participant Name"
+                  name="Name"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="col-sm-12 ">
+                <label htmlFor="Start Time">
+                  <b>Event Image</b>
+                </label>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg"
+                  placeholder="Filename"
+                  onChange={(e) => {
+                    setImage(e.target.files[0]);
+                  }}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-sm-12 col-lg-12">
+                <button type="button" className="btn" onClick={submitForm}>
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+}
