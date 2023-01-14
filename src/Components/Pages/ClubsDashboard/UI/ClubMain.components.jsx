@@ -1,5 +1,4 @@
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import SideBar from "../../../SideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -14,10 +13,10 @@ import "../CSS/clubs.styles.css";
 import Header from "../../../Shared/Header/Header";
 import Footer from "../../../Footer";
 import axios from "axios";
-import CreateEvent from "../../EventsDashboard/Components/createEvent.components";
 import CreateClub from "../createClub.jsx";
-import EditClub from "../editClub";
 import noResult from "../../../../img/event-alert.gif";
+import CreateEventClub from "../Components/createEventClub.components";
+import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 
 export default function ClubMain() {
   const [modalCreateEventShow, setModalCreateEventShow] = useState(false);
@@ -43,20 +42,32 @@ export default function ClubMain() {
   ];
 
   const fetchClubsEventsHandler = useCallback(async () => {
-    await axios.get("http://localhost:8000/get_club_events").then((res) => {
-      const data = res.data.map((event) => {
-        return event;
+    await axios
+      .get("http://localhost:8000/get_club_events", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((res) => {
+        const data = res.data.map((event) => {
+          return event;
+        });
+        setClubsEvents(data);
       });
-      setClubsEvents(data);
-    });
   });
   const fetchClubsHandler = useCallback(async () => {
-    await axios.get("http://localhost:8000/get_All_Clubs").then((res) => {
-      const data = res.data.map((club) => {
-        return club;
+    await axios
+      .get("http://localhost:8000/get_All_Clubs", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((res) => {
+        const data = res.data.map((club) => {
+          return club;
+        });
+        setClubs(data);
       });
-      setClubs(data);
-    });
   });
   useEffect(() => {
     fetchClubsHandler();
@@ -69,7 +80,7 @@ export default function ClubMain() {
       classes: "active",
     },
     {
-      icon: faCalendarPlus,
+      icon: faSquarePlus,
       classes: "",
       onClick: () => {
         setModalCreateEventShow(true);
@@ -96,14 +107,6 @@ export default function ClubMain() {
                     <span className="status-number">{clubsEvents.length}</span>
                     <span className="status-type">Upcoming</span>
                   </div>
-                  <div className="item-status">
-                    <span className="status-number">24</span>
-                    <span className="status-type">Completed</span>
-                  </div>
-                  <div className="item-status">
-                    <span className="status-number">62</span>
-                    <span className="status-type">Total Events</span>
-                  </div>
                 </div>
                 <div className="view-actions">
                   <button
@@ -119,16 +122,19 @@ export default function ClubMain() {
               </div>
               <div className="project-boxes jsListView">
                 {clubsEvents.length > 0 ? (
-                  clubsEvents.map((value) => (
-                    <ClubProjectBox
-                      key={value.event_id}
-                      date={value.start_date}
-                      eventName={value.event_name}
-                      clubName={value.club_name}
-                      startTime={value.start_time}
-                      endTime={value.end_time}
-                    />
-                  ))
+                  clubsEvents.map(
+                    (value) => (
+                      console.log(clubsEvents),
+                      (
+                        <ClubProjectBox
+                          key={value.event_id}
+                          data={value}
+                          clubs={clubs}
+                          fetchClubsEventsHandler={fetchClubsEventsHandler}
+                        />
+                      )
+                    )
+                  )
                 ) : (
                   <div className="d-flex flex-column align-items-center mt-5">
                     <img width="300" height="300" src={noResult} />
@@ -158,10 +164,11 @@ export default function ClubMain() {
               <div className="messages">
                 {clubs.map((value) => (
                   <MessageBox
-                    key={value.club_id}
-                    func={() => setModalEditClubShow(true)}
-                    name={value.club_name}
-                    image={`http://localhost:8000/static/images/Clubs/IconImages/Screenshot from 2022-09-05 23-09-24.png`}
+                    key={value["club_id"]}
+                    name={value["club_name"]}
+                    image={value["club_icon_image"]}
+                    value={value}
+                    fetchClubsHandler={fetchClubsHandler}
                   />
                 ))}
               </div>
@@ -169,20 +176,19 @@ export default function ClubMain() {
           </div>
         </main>
       </div>
-      <CreateEvent
+      <CreateEventClub
         show={modalCreateEventShow}
         onHide={() => setModalCreateEventShow(false)}
-      ></CreateEvent>
+        clubs={clubs}
+        fetchClubsEventsHandler={fetchClubsEventsHandler}
+      ></CreateEventClub>
 
       <CreateClub
         show={modalCreateClubShow}
         onHide={() => setModalCreateClubShow(false)}
+        fetchClubsHandler={fetchClubsHandler}
       ></CreateClub>
 
-      <EditClub
-        show={modalEditClubShow}
-        onHide={() => setModalEditClubShow(false)}
-      ></EditClub>
       <Footer />
     </>
   );

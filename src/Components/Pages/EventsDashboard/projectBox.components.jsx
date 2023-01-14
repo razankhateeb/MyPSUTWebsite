@@ -40,18 +40,18 @@ export default function ProjectBox(props) {
         <div className="project-box">
           <div className="project-box-header">
             <span>{props.date}</span>
-            {/* <div className="more-wrapper">
-             
-            </div> */}
           </div>
           <div className="project-box-content-header">
-            <p className="box-content-header">{props.name}</p>
-            <p className="box-content-subheader">{props.description}</p>
+            <p className="box-content-header">Event Name</p>
+            <p className="box-content-subheader">{props.name}</p>
+          </div>
+          <div className="project-box-content-header">
+            <p className="box-content-header">Event Location</p>
+            <p className="box-content-subheader">{props.location}</p>
           </div>
           <div className="project-box-footer d-flex flex-row gap-5">
             <div>
               <div className="participants">
-                {/*TODO Loop On Images*/}
                 {props.organizers.map((value) => {
                   return (
                     <img
@@ -105,6 +105,8 @@ export default function ProjectBox(props) {
         onHide={() => setModalClubShow(false)}
         orgs={props.org_list}
         event_id={props.id}
+        fetchEventHandler={props.fetchEventHandler}
+        event_organizers={props.organizers}
       />
     </>
   );

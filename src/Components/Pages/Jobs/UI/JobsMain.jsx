@@ -57,6 +57,8 @@ export default function JobsMain() {
     fetchJobsHandler();
   }, []);
 
+  const [searchText, setSearchText] = useState("");
+
   const menu = [
     {
       id: 1,
@@ -72,10 +74,35 @@ export default function JobsMain() {
       },
     },
   ];
+  const setSearch = (data) => {
+    setSearchText(data);
+  };
+  useEffect(() => {
+    if (searchText !== "") {
+      filterArray(searchText);
+    } else {
+      setJobs(jobs);
+      fetchJobsHandler();
+    }
+  }, [searchText]);
 
+  const filterArray = (filter) => {
+    const lowercasedValue = filter.toLowerCase().trim();
+
+    if (lowercasedValue === "") setJobs(jobs);
+    else {
+      const filteredData = jobs.filter(
+        (job) =>
+          job.job_title.toString().toLowerCase().includes(lowercasedValue) ||
+          job.company_name.toString().toLowerCase().includes(lowercasedValue)
+      );
+
+      setJobs(filteredData);
+    }
+  };
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} />
       <div className={"container app-body"}>
         <SideBar items={menu} />
         <main role="main" className="pb-3 page-main">
@@ -84,7 +111,6 @@ export default function JobsMain() {
               <div className="projects-section-header">
                 <p>Job Vacancies</p>
                 <p className="time">
-                  {" "}
                   {months[date.getMonth()]}, {date.getDate()}
                 </p>
               </div>
@@ -110,9 +136,7 @@ export default function JobsMain() {
                     filename={"Jobs_Report.csv"}
                   >
                     <button className="view-btn grid-view" title="Export">
-                      <i className="fa-regular fa-share-from-square">
-                        <FontAwesomeIcon icon={faShareFromSquare} />
-                      </i>
+                      <FontAwesomeIcon icon={faShareFromSquare} />
                     </button>
                   </CSVLink>
                 </div>
@@ -141,7 +165,7 @@ export default function JobsMain() {
                   <div className="d-flex flex-column align-items-center mt-5">
                     <img width="300" height="300" src={noResult} />
                     <h5 className="mt-3 text-capitalize">
-                      Looks like there are no current Jobs available
+                      Looks like there are no available Jobs
                     </h5>
                   </div>
                 )}

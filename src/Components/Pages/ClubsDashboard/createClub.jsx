@@ -32,6 +32,8 @@ export default function CreateClub(props) {
       .then((response) => {
         if (response.status === 200) {
           success();
+          props.onHide();
+          props.fetchClubsHandler();
         }
       })
       .catch((error) => {
@@ -139,7 +141,7 @@ export default function CreateClub(props) {
 
             <div className="col-12">
               <button type="button" className="btn" onClick={submitForm}>
-                Create Event
+                Create Club
               </button>
             </div>
           </div>

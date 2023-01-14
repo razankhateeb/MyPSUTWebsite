@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 const success = () => toast.success("Successfully registered");
 const errormsg = () => toast.error("Oops! An error occurred.");
 
-export default function MoreParticipantsForm(props) {
+export default function MoreClubs(props) {
     const [eventID, setEvent] = useState(props.event_id);
     const [image, setImage] = useState("");
     const [organizer, setOrganizer] = useState("");
@@ -17,10 +17,9 @@ export default function MoreParticipantsForm(props) {
         // prevents default form as in prevents reload on submit
         event.preventDefault();
         const request = new FormData();
-        request.append("org_image", image);
         //axios helps to send post
         await axios
-            .post(`http://localhost:8000/add_organizer_event?event_id=${eventID}&org_id=${organizer}`, request, {
+            .post(`http://localhost:8000/add_club_organizer_event?event_id=${props.event_id}&org_id=${organizer}`, request, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                 },
@@ -29,7 +28,7 @@ export default function MoreParticipantsForm(props) {
                 if (response.status === 200) {
                     success();
                     props.onHide();
-                    props.fetchEventHandler();
+                    props.fetchClubsEventsHandler();
                 }
             })
             .catch((error) => {
@@ -39,14 +38,14 @@ export default function MoreParticipantsForm(props) {
 
     async function deleteOrgnizer(id, eventID) {
         await axios
-            .post(`http://localhost:8000/delete_eve_organizer?org_id=${id}&event_id=${eventID}`, {}, {
+            .post(`http://localhost:8000/delete_club_organizer_event?org_id=${id}&event_id=${eventID}`, {}, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                 },
             })
             .then((response) => {
                 if (response.status === 200) {
-                    props.fetchEventHandler();
+                    props.fetchClubsEventsHandler();
                 }
             })
             .catch((error) => {
@@ -74,7 +73,7 @@ export default function MoreParticipantsForm(props) {
                                 <b>Event Organizers</b>
                             </label>
 
-                            {props.event_organizers.map((value) => {
+                            {props.organizers.map((value) => {
 
 
                                 return (<div
@@ -90,7 +89,7 @@ export default function MoreParticipantsForm(props) {
                                     </div>
                                     <button
                                         className="project-btn-more"
-                                        onClick={() => deleteOrgnizer(value.organizer_id, eventID)}
+                                        onClick={() => deleteOrgnizer(value.organizer_id, props.event_id)}
                                     >
                                         <FontAwesomeIcon icon={faTrash} color="#ea6564"/>
                                     </button>
@@ -111,12 +110,12 @@ export default function MoreParticipantsForm(props) {
                                 <option value={"Any"} selected disabled>
                                     Any
                                 </option>
-                                {props.orgs.map((value) => {
+                                {props.clubs.map((value) => {
                                     return (<option
                                         className="form-control"
-                                        value={value.organizer_id}
+                                        value={value.club_id}
                                     >
-                                        {value.organizer_name}
+                                        {value.club_name}
                                     </option>);
                                 })}
                             </select>

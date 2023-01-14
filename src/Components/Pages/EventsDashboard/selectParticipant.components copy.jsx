@@ -30,7 +30,7 @@ export default function SelectParticipantForm(props) {
         if (response.status === 200) {
           success();
           props.onHide();
-          props.fetchJobsHandler();
+          props.fetchOrgsHandler();
         }
       })
       .catch((error) => {
@@ -53,39 +53,6 @@ export default function SelectParticipantForm(props) {
       <Modal.Body>
         <div className="form-container">
           <div className="row">
-            {/* <div className="grid-container">
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={stdAffairs}
-                                 title="Deanship of Student Affairs" alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={admissionLogo}
-                                 title="Deanship of Admissions and Registration" alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={engLogo}
-                                 title="Training office" alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={arcLogo} alt={""}/>
-                            <p></p>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={cyberSecurity} alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={acmLogo} alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={gsdc} alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={dart} alt={""}/>
-                        </div>
-                        <div className="grid-item">
-                            <img className="img-fluid" width="120" height="120" src={ieee} alt={""}/>
-                        </div>
-                    </div> */}
             <div className="row other-participants">
               <div className="col-sm-12">
                 <label for="Club Club Event Name">

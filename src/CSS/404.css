@@ -1,38 +1,40 @@
 .section-404 {
-  text-align: center;
+    text-align: center;
 }
+
 .section-404 h3 {
-  color: var(--body);
-  font-size: 200px;
-  font-weight: bold;
-  letter-spacing: 20px;
-  text-align: center;
-  margin-bottom: 0;
+    color: var(--body);
+    font-size: 200px;
+    font-weight: bold;
+    letter-spacing: 20px;
+    text-align: center;
+    margin-bottom: 0;
 }
+
 .section-404 h2 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--black);
-  margin-bottom: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black);
+    margin-bottom: 30;
 }
 
 .section-404 a.btn-send {
-  background-color: var(--main-color);
-  text-decoration: none;
-  text-transform: capitalize;
-  color: var(--link-color-active);
-  border: 1px solid var(--primary);
-  margin: 20px 0;
-  border: 1px solid;
-  padding: 5px 20px;
-  transition: all 0.2s;
-  border-radius: 5px;
-  font-size: 20px;
+    background-color: var(--main-color);
+    text-decoration: none;
+    text-transform: capitalize;
+    color: var(--link-color-active);
+    border: 1px solid var(--primary);
+    margin: 20px 0;
+    border: 1px solid;
+    padding: 5px 20px;
+    transition: all 0.2s;
+    border-radius: 5px;
+    font-size: 20px;
 }
 
 .section-404 a.btn-send:hover {
-  background-color: var(--link-color-hover);
+    background-color: var(--link-color-hover);
 
-  color: var(--link-color-active-bg);
+    color: var(--link-color-active-bg);
 }

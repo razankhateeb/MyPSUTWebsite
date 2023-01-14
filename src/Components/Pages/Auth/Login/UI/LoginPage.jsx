@@ -50,9 +50,11 @@ export default function LoginPage() {
             )}
 
             <input className="login-btn" type="submit" value="Login" />
-            {/* <div className="forgot">
-              <a href="/">Forgot Password?</a>
-            </div> */}
+            <div className="forgot">
+              <a href="mailto:admin@psutportal.com?subject=Forgot Password&body=Dear Admin,%0D%0A%0D%0AThis is to inform you that I have no access to login account for the portal (Invalid Username or password).%0D%0AI believe I have forgotton my password, Kindly provide a temporary password to allow access.%0D%0A%0D%0AThank you in advance.%0D%0A">
+                Forgot Password?
+              </a>
+            </div>
           </form>
         </div>
       </div>

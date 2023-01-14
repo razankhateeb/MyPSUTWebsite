@@ -18,43 +18,42 @@ import { useNavigate } from "react-router-dom";
 import CourseRequests from "./CourseRequests";
 import noResult from "../../../../img/tutor.gif";
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-} from "react-router-dom/dist";
+import { Route, Routes } from "react-router-dom/dist";
 import "../CSS/tutors.css";
 import TutorRequests from "./TutorRequests";
-import CreateCourse from "../components/addCourse";
 import CreateSession from "../components/addSession";
 
 export default function TutorsMain() {
   const navigate = useNavigate();
   const [modalAddTutoringShow, setModalAddTutoringShow] = useState(false);
   const [tutoringRequests, setTutoringRequests] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const [courseRequest, setCourseRequest] = useState([]);
 
   const [date, setDate] = useState(new Date());
   const [sessions, setSessions] = useState([]);
-  const [org, setOrgs] = useState([]);
+  const [courseTutors, setCourseTutor] = useState([]);
   const [crs, setCrs] = useState([]);
 
   function CloseAdd() {
     setModalAddTutoringShow(false);
   }
+
   const fetchOrgsHandler = useCallback(async () => {
-    let resopnse = await axios.get("http://localhost:8000/get_All_Tutors", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-      },
-    });
+    let resopnse = await axios.get(
+      "http://localhost:8000/get_all_course_tutors",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      }
+    );
     try {
       const data = resopnse.data.map((org) => {
         return org;
       });
-      setOrgs(data);
+      setCourseTutor(data);
     } catch (e) {
       console.log(e);
     }
@@ -156,7 +155,32 @@ export default function TutorsMain() {
     fetchOrgsHandler();
     fetchCrsHandler();
   }, []);
+  const setSearch = (data) => {
+    setSearchText(data);
+  };
+  useEffect(() => {
+    if (searchText !== "") {
+      filterArray(searchText);
+    } else {
+      setSessions(sessions);
+      fetchSessionsHandler();
+    }
+  }, [searchText]);
 
+  const filterArray = (filter) => {
+    const lowercasedValue = filter.toLowerCase().trim();
+
+    if (lowercasedValue === "") setSessions(sessions);
+    else {
+      const filteredData = sessions.filter(
+        (arr) =>
+          arr.course_id.toString().toLowerCase().includes(lowercasedValue)
+        //   || arr.course.toString().toLowerCase().includes(lowercasedValue)
+      );
+
+      setSessions(filteredData);
+    }
+  };
   const menu = [
     {
       id: 1,
@@ -180,7 +204,7 @@ export default function TutorsMain() {
         <Route path="/TutorRequests" element={<TutorRequests />}></Route>
       </Routes>
 
-      <Header />
+      <Header setSearch={setSearch} />
 
       <div className={"container app-body tutoring"}>
         <SideBar items={menu} />
@@ -262,16 +286,10 @@ export default function TutorsMain() {
                   sessions.map((value) => {
                     return (
                       <TutoringMainProjectBox
-                        date={value.date}
                         key={value.course_id}
-                        course_name={value.course_name}
-                        std_name={value.std_name}
-                        std_id={value.std_id}
-                        session_id={value.session_id}
-                        tid={value.tutor_id}
-                        cid={value.course_id}
-                        sessions={value.sessions}
+                        data={value}
                         fetchSessionsHandler={fetchSessionsHandler}
+                        courseTutors={courseTutors}
                       />
                     );
                   })
@@ -292,7 +310,7 @@ export default function TutorsMain() {
         show={modalAddTutoringShow}
         onHide={CloseAdd}
         fetchSessionsHandler={fetchSessionsHandler}
-        organizers={org}
+        courseTutors={courseTutors}
         courses={crs}
       ></CreateSession>
       <Footer />

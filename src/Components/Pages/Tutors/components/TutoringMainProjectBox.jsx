@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import "../CSS/tutors.css";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import EditSession from "./editSession";
 import axios from "axios";
 
@@ -24,8 +23,7 @@ export default function TutoringMainProjectBox(props) {
       }
     );
     try {
-      console.log(resopnse);
-      props.fetchJobsHandler();
+      props.fetchSessionsHandler();
     } catch (e) {
       console.log(e);
     }
@@ -35,7 +33,7 @@ export default function TutoringMainProjectBox(props) {
     <div className="project-box-wrapper">
       <div className="project-box">
         <div className="project-box-header">
-          <span>{props.date}</span>
+          <span>{props.data.day}</span>
           <div className="more-wrapper">
             <button
               className="project-btn-more"
@@ -43,30 +41,23 @@ export default function TutoringMainProjectBox(props) {
             >
               <FontAwesomeIcon icon={faPen} />
             </button>
-
-            {/* <button
-              className="project-btn-more"
-              onClick={() => deleteSessionsHandler(props.c_s_id)}
-            >
-              <FontAwesomeIcon icon={faTrash} color="#ea6564" />
-            </button> */}
           </div>
         </div>
 
         <div className="project-box-content-header">
-          <p className="box-content-header">{props.course_name}</p>
-          <p className="box-content-subheader">{props.cid}</p>
+          <p className="box-content-header">{props.data.course_name}</p>
+          <p className="box-content-subheader">{props.data.course_id}</p>
         </div>
 
         <div className="project-box-content-header">
-          <p className="box-content-header">{props.std_name}</p>
-          <p className="box-content-subheader">{props.std_id}</p>
+          <p className="box-content-header">{props.data.std_name}</p>
+          <p className="box-content-subheader">{props.data.std_id}</p>
         </div>
 
         <div className="project-box-content-header">
           <p className="box-content-header">Sessions</p>
           <p className="box-content-subheader">
-            {props.sessions.map((value) => {
+            {props.data.sessions.map((value) => {
               return (
                 <>
                   <span>
@@ -83,9 +74,10 @@ export default function TutoringMainProjectBox(props) {
       {/* <EditForm show={modalShow} onHide={() => setModalShow(false)} /> */}
       <EditSession
         fetchSessionsHandler={props.fetchSessionsHandler}
-        data={props}
+        data={props.data}
         show={modalShow}
         onHide={CloseAdd}
+        courseTutors={props.courseTutors}
       />
     </div>
   );

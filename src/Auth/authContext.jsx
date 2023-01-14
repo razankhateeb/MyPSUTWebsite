@@ -8,6 +8,7 @@ const AuthContext = React.createContext({
   token: "",
   isLoggedIn: false,
   admin_role: "",
+  user_id: "",
   login: (request) => {},
   logout: () => {},
   valid: true,
@@ -22,6 +23,8 @@ export const AuthContextProvider = (props) => {
   const [token, setToken] = useState(initalToken);
   const [adminRole, setAdminRole] = useState(initalRole);
   const [username, setuserName] = useState(userName);
+  const [userid, setuserID] = useState("");
+
   const [isvalid, setValid] = useState(true);
 
   const userIsLoggedIn = !!token;
@@ -33,6 +36,7 @@ export const AuthContextProvider = (props) => {
           if (response.status === 200) {
             localStorage.setItem("access_token", response.data.access_token);
             setToken(response.data.access_token);
+            setTimeout(logOutHandler, 3600000);
           }
         });
       //url, request body, headers/options/config
@@ -49,6 +53,8 @@ export const AuthContextProvider = (props) => {
         .then((res) => {
           setAdminRole(res.data.user_role);
           setuserName(res.data.full_name);
+          setuserID(res.data.id);
+
           localStorage.setItem("admin_role", res.data.user_role);
           switch (res.data.user_role) {
             case "SUPERUSER":
@@ -88,6 +94,7 @@ export const AuthContextProvider = (props) => {
     setAdminRole(null);
     setuserName(null);
     setValid(true);
+    setuserID(null);
   };
 
   const contextValue = {
@@ -97,6 +104,7 @@ export const AuthContextProvider = (props) => {
     logout: logOutHandler,
     admin_role: adminRole,
     userName: username,
+    user_id: userid,
     valid: isvalid,
   };
 

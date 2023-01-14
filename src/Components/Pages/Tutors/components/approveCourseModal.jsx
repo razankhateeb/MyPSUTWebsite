@@ -1,10 +1,7 @@
 import { Modal } from "react-bootstrap";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
-import { useRef } from "react";
-import { useCallback } from "react";
-import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const success = () => toast.success("Successfully registered");
 const errormsg = () => toast.error("Oops! An error occurred.");
@@ -19,14 +16,11 @@ export default function ApproveCourseModal(props) {
   const [selectedTutor, setSelectedTutor] = useState([]);
 
   const fetchTutorHandler = useCallback(async () => {
-    let resopnse = await axios.get(
-      "http://localhost:8000/get_All_Courses_Tutors",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      }
-    );
+    let resopnse = await axios.get("http://localhost:8000/get_All_Tutors", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
     try {
       const data = resopnse.data.map((tutor) => {
         return tutor;
@@ -47,7 +41,7 @@ export default function ApproveCourseModal(props) {
     //axios helps to send post
     await axios
       .post(
-        `http://localhost:8000/accept_course_request?course_id=${props.c_id}&tutor_id=${selectedTutor}`,
+        `http://localhost:8000/accept_course_request/${props.id}?course_id=${props.c_id}&tutor_id=${selectedTutor}`,
         {},
         {
           headers: {
@@ -59,7 +53,7 @@ export default function ApproveCourseModal(props) {
         if (response.status === 200) {
           success();
           props.onHide();
-          props.fetchSessionsHandler();
+          props.fetchCourseRequestHandler();
         }
       })
       .catch((error) => {
@@ -84,9 +78,9 @@ export default function ApproveCourseModal(props) {
       </Modal.Header>
       <Modal.Body>
         <form action="" className="form-container">
-          <div className="col-sm-12 col-lg-6">
+          <div className="col-sm-12">
             <label htmlFor="Main_Organizer">
-              <b>Main Tutor</b>
+              <b>Assign Tutor</b>
             </label>
             <select
               className="form-select"
@@ -96,17 +90,14 @@ export default function ApproveCourseModal(props) {
                 Any
               </option>
               {tutors.map((value) => {
-                console.log(value);
                 return (
-                  <option value={value.tutor_id}>
-                    {value.tutor_detail.tutor_name}
-                  </option>
+                  <option value={value.tutor_id}>{value.tutor_name}</option>
                 );
               })}
             </select>
             <div className="col-12">
               <button type="button" className="btn" onClick={submitForm}>
-                Create Job
+                Assign Tutor
               </button>
             </div>
           </div>

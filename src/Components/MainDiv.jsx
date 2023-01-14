@@ -1,8 +1,7 @@
 import React from "react";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faListUl} from "@fortawesome/free-solid-svg-icons";
-import {faShareFromSquare} from "@fortawesome/free-solid-svg-icons";
+import {faListUl, faShareFromSquare} from "@fortawesome/free-solid-svg-icons";
 
 import "../CSS/jobs.css";
 import ProjectsHeader from "./Shared/Project/ProjectHeader";

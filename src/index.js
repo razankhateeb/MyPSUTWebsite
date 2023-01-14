@@ -5,14 +5,14 @@ import "./index.css";
 import "./CSS/dark.css";
 
 import App from "./App";
-import { AuthContextProvider } from "./Auth/authContext";
-import { BrowserRouter } from "react-router-dom";
+import {AuthContextProvider} from "./Auth/authContext";
+import {BrowserRouter} from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  </BrowserRouter>
+    <BrowserRouter>
+        <AuthContextProvider>
+            <App/>
+        </AuthContextProvider>
+    </BrowserRouter>
 );

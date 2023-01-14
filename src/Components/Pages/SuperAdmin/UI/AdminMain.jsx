@@ -1,8 +1,6 @@
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import SideBar from "../../../SideBar";
-import JobsProjectBox from "./AdminProjectBox";
-import AddJob from "../components/addUser";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl } from "@fortawesome/free-solid-svg-icons/faListUl";
 import { faShareFromSquare } from "@fortawesome/free-regular-svg-icons/faShareFromSquare";
@@ -13,13 +11,11 @@ import Footer from "../../../Footer";
 import axios from "axios";
 import AdminProjectBox from "./AdminProjectBox";
 import AddUser from "../components/addUser";
+import noResult from "../../../../img/users.gif";
 
 export default function AdminMain() {
   const [modalAddJobShow, setModalAddJobShow] = useState(false);
-
-  function CloseAdd() {
-    setModalAddJobShow(false);
-  }
+  const [searchText, setSearchText] = useState("");
   const [users, setUsers] = useState([]);
   const [date, setDate] = useState(new Date());
   const months = [
@@ -37,6 +33,10 @@ export default function AdminMain() {
     "December",
   ];
 
+  function CloseAdd() {
+    setModalAddJobShow(false);
+  }
+
   const fetchUsersHandler = useCallback(async () => {
     let resopnse = await axios.get("http://localhost:8000/users", {
       headers: {
@@ -51,10 +51,6 @@ export default function AdminMain() {
     } catch (e) {
       console.log(e);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchUsersHandler();
   }, []);
 
   const menu = [
@@ -73,9 +69,43 @@ export default function AdminMain() {
     },
   ];
 
+  //search function
+  const setSearch = (data) => {
+    setSearchText(data);
+  };
+
+  const filterArray = (filter) => {
+    const lowercasedValue = filter.toLowerCase().trim();
+
+    if (lowercasedValue === "") setUsers(users);
+    else {
+      const filteredData = users.filter(
+        (arr) =>
+          arr.email.toString().toLowerCase().includes(lowercasedValue) ||
+          arr.user_role.toString().toLowerCase().includes(lowercasedValue)
+      );
+
+      setUsers(filteredData);
+    }
+  };
+
+  useEffect(() => {
+    if (searchText !== "") {
+      filterArray(searchText);
+    } else {
+      setUsers(users);
+      fetchUsersHandler();
+    }
+  }, [searchText]);
+
+  useEffect(() => {
+    fetchUsersHandler();
+  }, []);
+
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} />
+      {/* {console.log(`searchtext inside main is: ${searchText}`)} */}
       <div className={"container app-body"}>
         <SideBar items={menu} />
         <main role="main" className="pb-3 page-main">
@@ -84,7 +114,6 @@ export default function AdminMain() {
               <div className="projects-section-header">
                 <p>Admins</p>
                 <p className="time">
-                  {" "}
                   {months[date.getMonth()]}, {date.getDate()}
                 </p>
               </div>
@@ -109,22 +138,31 @@ export default function AdminMain() {
                 </div>
               </div>
               <div className="project-boxes jsListView">
-                {users.map((value) => {
-                  return (
-                    <AdminProjectBox
-                      id={value.id}
-                      fetchUsersHandler={fetchUsersHandler}
-                      date={value.date}
-                      key={value.email}
-                      email={value.email}
-                      active={value.is_active}
-                      superuser={value.is_superuser}
-                      name={value.full_name}
-                      role={value.user_role}
-                      password={value.password}
-                    />
-                  );
-                })}
+                {users.length > 0 ? (
+                  users.map((value) => {
+                    return (
+                      <AdminProjectBox
+                        id={value.id}
+                        fetchUsersHandler={fetchUsersHandler}
+                        date={value.date}
+                        key={value.email}
+                        email={value.email}
+                        active={value.is_active}
+                        superuser={value.is_superuser}
+                        name={value.full_name}
+                        role={value.user_role}
+                        password={value.password}
+                      />
+                    );
+                  })
+                ) : (
+                  <div className="d-flex flex-column align-items-center mt-5">
+                    <img width="300" height="300" src={noResult} />
+                    <h5 className="mt-3 text-capitalize">
+                      Looks like there are no available users
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
           </div>

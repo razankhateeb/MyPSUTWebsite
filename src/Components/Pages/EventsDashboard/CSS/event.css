@@ -23,7 +23,7 @@
 
 .event-boxes.jsListView .project-box-content-header {
   order: 1;
-  max-width: 30%;
+  width: 30%;
 }
 
 .event-boxes.jsListView .project-box-header {
@@ -378,4 +378,8 @@
   .grid-container {
     grid-template-columns: auto;
   }
+}
+.event-orgs img {
+  border-radius: 50px;
+  margin-right: 10px;
 }

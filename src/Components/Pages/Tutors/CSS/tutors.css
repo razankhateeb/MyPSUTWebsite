@@ -56,13 +56,13 @@
 
 .tutoring .project-boxes.jsListView .more-wrapper {
   /* position: absolute;
-  right: 16px;
-  top: 16px; */
+    right: 16px;
+    top: 16px; */
 }
 
 .tutoring .project-boxes.jsListView .project-box-content-header {
   order: 1;
-  max-width: 30%;
+  width: 30%;
 }
 
 .tutoring .project-boxes.jsListView .project-box-header {

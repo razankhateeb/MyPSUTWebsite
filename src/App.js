@@ -1,18 +1,18 @@
 import EventMain from "./Components/Pages/EventsDashboard/Events.components";
-import ClubMain from "./Components/Pages/ClubsDashboard/UI/ClubMain.components";
 import JobsMain from "./Components/Pages/Jobs/UI/JobsMain";
 import LoginPage from "./Components/Pages/Auth/Login/UI/LoginPage";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "./Auth/authContext";
 import TutorsMain from "./Components/Pages/Tutors/UI/TutorsMain";
-import BusMain from "./Components/Pages/Bus/BusMain";
-import PermitMain from "./Components/Pages/Permit/PermitsMain";
 import TutorRequests from "./Components/Pages/Tutors/UI/TutorRequests.jsx";
 import CourseRequests from "./Components/Pages/Tutors/UI/CourseRequests.jsx";
 import Error404 from "./Components/404";
-import Privacy from "./Components/Privacy";
+import PermitLogs from "./Components/Pages/Permit/PermitLogs";
 import AdminMain from "./Components/Pages/SuperAdmin/UI/AdminMain";
+import ClubMain from "./Components/Pages/ClubsDashboard/UI/ClubMain.components";
+import Bus from "./Components/Pages/Bus/Bus";
+import Permit from "./Components/Pages/Permit/Permit";
 function App() {
   const authCtx = useContext(AuthContext);
 
@@ -105,7 +105,7 @@ function App() {
           path="/BusPage"
           element={
             authCtx.isLoggedIn && authCtx.admin_role === "BusAdmin" ? (
-              <BusMain />
+              <Bus />
             ) : (
               <Navigate to="/" replace />
             )
@@ -117,19 +117,25 @@ function App() {
           path="/PermitsPage"
           element={
             authCtx.isLoggedIn && authCtx.admin_role === "PermitsAdmin" ? (
-              <PermitMain />
+              <Permit />
             ) : (
               <Navigate to="/" replace />
             )
           }
         />
-        {/* <Route
+
+        <Route
           exact
-          path="/Privacy"
+          path="/PermitsLog"
           element={
-            authCtx.isLoggedIn ? <Privacy /> : <Navigate to="/" replace />
+            authCtx.isLoggedIn && authCtx.admin_role === "PermitsAdmin" ? (
+              <PermitLogs />
+            ) : (
+              <Navigate to="/" replace />
+            )
           }
-        /> */}
+        />
+
         <Route exact path="*" element={<Error404 />} />
       </Routes>
     </div>

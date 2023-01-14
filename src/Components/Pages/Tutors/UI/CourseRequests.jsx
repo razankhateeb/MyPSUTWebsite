@@ -1,23 +1,11 @@
-import {
-  faArrowLeft,
-  faBackward,
-  faChalkboardTeacher,
-  faChevronRight,
-  faFileLines,
-  faHouse,
-} from "@fortawesome/free-solid-svg-icons";
-import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
-import SideBar from "../../../SideBar";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl } from "@fortawesome/free-solid-svg-icons/faListUl";
-import { faShareFromSquare } from "@fortawesome/free-regular-svg-icons/faShareFromSquare";
 import { useCallback, useEffect, useState } from "react";
 import Header from "../../../Shared/Header/Header";
 import Footer from "../../../Footer";
 import axios from "axios";
-import TutoringMainProjectBox from "../components/TutoringMainProjectBox";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import CreateCourse from "../components/addCourse";
+import { Link } from "react-router-dom";
 import noResult from "../../../../img/tutor.gif";
 
 import "../CSS/tutors.css";
@@ -26,6 +14,7 @@ import CRequests from "../components/cRequest";
 export default function CourseRequests() {
   const [modalAddCourseShow, setModalAddCourseShow] = useState(false);
   const [courses, setCourses] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const [date, setDate] = useState(new Date());
   const months = [
@@ -42,6 +31,8 @@ export default function CourseRequests() {
     "November",
     "December",
   ];
+  const [courseTutors, setCourseTutor] = useState([]);
+
   const fetchCourseRequestHandler = useCallback(async () => {
     let resopnse = await axios.get(
       "http://localhost:8000/get_All_Course_Requests",
@@ -78,29 +69,43 @@ export default function CourseRequests() {
     }
   }, []);
 
-  const acceptRequestHandler = useCallback(async (course) => {
-    let resopnse = await axios.post(
-      // `http://localhost:8000/accept_course_request?course_id=${props.Course_id}&tutor_id=${organizer}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      }
-    );
-    try {
-      fetchCourseRequestHandler();
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
   useEffect(() => {
     fetchCourseRequestHandler();
     deleteRequestHandler();
   }, []);
+
+  const setSearch = (data) => {
+    setSearchText(data);
+  };
+
+  const filterArray = (filter) => {
+    const lowercasedValue = filter.toLowerCase().trim();
+
+    if (lowercasedValue === "") setCourses(courses);
+    else {
+      const filteredData = courses.filter(
+        (arr) =>
+          arr.Course_Name.toString().toLowerCase().includes(lowercasedValue) ||
+          arr.Course_id.toString().toLowerCase().includes(lowercasedValue) ||
+          arr.Total.toString().toLowerCase().includes(lowercasedValue)
+      );
+
+      setCourses(filteredData);
+    }
+  };
+
+  useEffect(() => {
+    if (searchText !== "") {
+      filterArray(searchText);
+    } else {
+      setCourses(courses);
+      fetchCourseRequestHandler();
+    }
+  }, [searchText]);
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} />
+
       <div className={"container app-body tutoring"}>
         <main role="main" className="pb-3 page-main">
           <div className="d-flex mb-4 justify-content-between ">
@@ -145,7 +150,8 @@ export default function CourseRequests() {
                         course_name={value.Course_Name}
                         total={value.Total}
                         decline={deleteRequestHandler}
-                        approve={acceptRequestHandler}
+                        courseTutors={courseTutors}
+                        fetchCourseRequestHandler={fetchCourseRequestHandler}
                       />
                     );
                   })

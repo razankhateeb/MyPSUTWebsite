@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
 import "../CSS/tutors.css";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Modal } from "react-bootstrap";
 import ApproveCourseModal from "./approveCourseModal";
 
 export default function CRequests(props) {
   const [modalShow, setModalShow] = useState(false);
+
   function CloseAdd() {
     setModalShow(false);
   }
+
   const acceptReq = () => {
     setModalShow(true);
   };
@@ -55,6 +53,9 @@ export default function CRequests(props) {
         show={modalShow}
         onHide={CloseAdd}
         c_id={props.id}
+        id={props.id}
+        courseTutors={props.courseTutors}
+        fetchCourseRequestHandler={props.fetchCourseRequestHandler}
       ></ApproveCourseModal>
     </div>
   );

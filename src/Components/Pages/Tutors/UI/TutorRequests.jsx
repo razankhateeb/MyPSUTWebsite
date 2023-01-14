@@ -1,8 +1,6 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl } from "@fortawesome/free-solid-svg-icons/faListUl";
-import { faShareFromSquare } from "@fortawesome/free-regular-svg-icons/faShareFromSquare";
 import { useCallback, useEffect, useState } from "react";
 import Header from "../../../Shared/Header/Header";
 import Footer from "../../../Footer";
@@ -19,6 +17,7 @@ export default function TutorRequests(props) {
   const [modalCreateTutorShow, setModalCreateTutorShow] = useState(false);
   const [tutoringRequests, setTutoringRequests] = useState([]);
   const [tlist, setTutors] = useState("");
+  const [searchText, setSearchText] = useState("");
 
   const [date, setDate] = useState(new Date());
   const months = [
@@ -73,20 +72,27 @@ export default function TutorRequests(props) {
   }, []);
 
   const acceptRequestHandler = useCallback(async (tutor_request_id) => {
-    let resopnse = await axios.post(
-      `http://localhost:8000/accept_tutor_request/${tutor_request_id}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      }
-    );
-    try {
-      fetchTutoringRequestsHandler();
-    } catch (e) {
-      console.log(e);
-    }
+    let resopnse = await axios
+      .post(
+        `http://localhost:8000/accept_tutor_request/${tutor_request_id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.status === 202) {
+          console.log("400000");
+          fetchTutoringRequestsHandler();
+        }
+        fetchTutoringRequestsHandler();
+      })
+      .catch((reason) => {
+        console.log(reason.status);
+      });
   }, []);
 
   useEffect(() => {
@@ -94,9 +100,37 @@ export default function TutorRequests(props) {
     fetchTutoringRequestsHandler();
   }, []);
 
+  const setSearch = (data) => {
+    setSearchText(data);
+  };
+
+  const filterArray = (filter) => {
+    const lowercasedValue = filter.toLowerCase().trim();
+
+    if (lowercasedValue === "") setTutoringRequests(tutoringRequests);
+    else {
+      const filteredData = tutoringRequests.filter(
+        (arr) =>
+          arr.course_id.toString().toLowerCase().includes(lowercasedValue)
+        // || arr.user_role.toString().toLowerCase().includes(lowercasedValue)
+      );
+
+      setTutoringRequests(filteredData);
+    }
+  };
+
+  useEffect(() => {
+    if (searchText !== "") {
+      filterArray(searchText);
+    } else {
+      setTutoringRequests(tutoringRequests);
+      fetchTutoringRequestsHandler();
+    }
+  }, [searchText]);
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} />
+
       <div className={"container app-body tutoring"}>
         <main role="main text-align-right" className="pb-3 page-main">
           <div className="d-flex mb-4 justify-content-between ">

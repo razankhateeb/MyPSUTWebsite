@@ -1,34 +1,29 @@
 import {Modal} from "react-bootstrap";
+import {toast, Toaster} from "react-hot-toast";
 import {useState} from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
-
-import "./CSS/editform.styles.css";
 
 const success = () => toast.success("Successfully registered");
 const errormsg = () => toast.error("Oops! An error occurred.");
 
-export default function EditForm(props) {
-    const [name, setName] = useState(props.data.name);
-    const [location, setLoctation] = useState(props.data.location);
-    const [sDate, setSDate] = useState(props.data.sDate);
-    const [eDate, setEDate] = useState(props.data.eDate);
-    const [sTime, setSTime] = useState(props.data.sTime);
-    const [eTime, setETime] = useState(props.data.eTime);
-    const [description, setDescription] = useState(props.data.description);
+export default function CreateEvent(props) {
+    const [name, setName] = useState("");
+    const [eventLocation, setEventLocation] = useState("");
+    const [description, setDescription] = useState("");
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     const [image, setImage] = useState("");
-    // props.data.organizers[0].organizer_id
+    const [organizer, setOrganizer] = useState("");
 
     const submitForm = async (event) => {
-        // prevents default form as in prevents reload on submit
         event.preventDefault();
         const request = new FormData();
         request.append("event_image", image);
-
-        //axios helps to send post
         await axios
             .post(
-                `http://localhost:8000/update_event/${props.data.id}?event_name=${name}&location=${location}&start_date=${sDate}&end_date=${eDate}&start_time=${sTime}&end_time=${eTime}&description=${description}`,
+                `http://localhost:8000/create_Event_Club?event_name=${name}&location=${eventLocation}&start_date=${startDate}&end_date=${endDate}&start_time=${startTime}&end_time=${endTime}&description=${description}&club_organizer=${organizer}`,
                 request,
                 {
                     headers: {
@@ -40,7 +35,7 @@ export default function EditForm(props) {
                 if (response.status === 200) {
                     success();
                     props.onHide();
-                    props.fetchEventHandler();
+                    props.fetchClubsEventsHandler();
                 }
             })
             .catch((error) => {
@@ -56,10 +51,11 @@ export default function EditForm(props) {
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">Edit Event</Modal.Title>
+                <Modal.Title>
+                    <h5>Create New Event</h5>
+                </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {console.log(props.active)}
                 <form action="" className="form-container">
                     <div className="row">
                         <div className="col-sm-12 col-lg-6">
@@ -69,8 +65,8 @@ export default function EditForm(props) {
                             <input
                                 type="text"
                                 placeholder="Enter Event Name"
-                                name="name"
-                                value={name}
+                                name="event_name"
+                                required
                                 onChange={(e) => {
                                     setName(e.target.value);
                                 }}
@@ -82,11 +78,11 @@ export default function EditForm(props) {
                             </label>
                             <input
                                 type="text"
-                                placeholder="Enter Location"
+                                placeholder="Enter Event Location"
                                 name="location"
-                                value={location}
+                                required
                                 onChange={(e) => {
-                                    setLoctation(e.target.value);
+                                    setEventLocation(e.target.value);
                                 }}
                             />
                         </div>
@@ -96,14 +92,13 @@ export default function EditForm(props) {
                             </label>
                             <textarea
                                 rows="4"
-                                value={description}
                                 onChange={(e) => {
                                     setDescription(e.target.value);
                                 }}
                             ></textarea>
                         </div>
                         <div className="col-sm-12 col-lg-6">
-                            <label htmlFor="Start Time">
+                            <label htmlFor="Event_Image">
                                 <b>Event Image</b>
                             </label>
                             <input
@@ -115,34 +110,52 @@ export default function EditForm(props) {
                                 }}
                             />
                         </div>
-
                         <div className="col-sm-12 col-lg-6">
-                            <label htmlFor="EventDate">
+                            <label htmlFor="Main_Organizer">
+                                <b>Main Organizer</b>
+                            </label>
+                            <select
+                                className="form-select"
+                                onChange={(e) => setOrganizer(e.target.value)}
+                            >
+                                <option value={"Any"} selected disabled>
+                                    Any
+                                </option>
+                                {props.clubs.map((value) => {
+                                    return (
+                                        <option value={value.club_id}>
+                                            {value.club_name}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <div className="col-sm-12 col-lg-6">
+                            <label htmlFor="Event_startDate">
                                 <b>Event Start Date</b>
                             </label>
                             <input
-                                className="Start Date"
+                                className="datepicker"
                                 type="date"
-                                placeholder="Enter Date"
-                                name="sdate"
-                                value={sDate}
+                                placeholder="Enter Start Date"
+                                name="start_date"
                                 onChange={(e) => {
-                                    setSDate(e.target.value);
+                                    setStartDate(e.target.value);
                                 }}
                             />
                         </div>
                         <div className="col-sm-12 col-lg-6">
-                            <label htmlFor="EventDate">
+                            <label htmlFor="Event_endDate">
                                 <b>Event End Date</b>
                             </label>
                             <input
-                                className="end Date"
+                                className="datepicker"
                                 type="date"
-                                placeholder="Enter Date"
-                                name="edate"
-                                value={eDate}
+                                placeholder="Enter End Date"
+                                name="end_date"
+                                required
                                 onChange={(e) => {
-                                    setEDate(e.target.value);
+                                    setEndDate(e.target.value);
                                 }}
                             />
                         </div>
@@ -153,34 +166,36 @@ export default function EditForm(props) {
                             <input
                                 type="time"
                                 placeholder="Enter Time"
-                                value={sTime}
                                 onChange={(e) => {
-                                    setSTime(e.target.value);
+                                    setStartTime(e.target.value);
                                 }}
+                                required
                             />
                         </div>
                         <div className="col-sm-12 col-lg-6">
-                            <label htmlFor="Start Time">
+                            <label htmlFor="End Time">
                                 <b>End Time</b>
                             </label>
                             <input
                                 type="time"
                                 placeholder="Enter Time"
-                                value={eTime}
+                                required
                                 onChange={(e) => {
-                                    setETime(e.target.value);
+                                    setEndTime(e.target.value);
                                 }}
                             />
                         </div>
 
-                        <div className="col-sm-12">
+                        <div className="col-12">
                             <button type="button" className="btn" onClick={submitForm}>
-                                Save
+                                Create Event
                             </button>
                         </div>
                     </div>
                 </form>
             </Modal.Body>
+            <Toaster position="top-right" reverseOrder={true}/>
         </Modal>
     );
 }
+

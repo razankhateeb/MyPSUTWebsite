@@ -68,10 +68,6 @@ export default function AdminProjectBox(props) {
         show={modalShow}
         onHide={CloseAdd}
       />
-      {/* <SelectParticipantForm
-        show={modalJobShow}
-        onHide={() => setModalJobShow(false)}
-      /> */}
     </div>
   );
 }

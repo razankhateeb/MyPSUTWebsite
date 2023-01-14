@@ -1,8 +1,8 @@
 .notificationContainer {
-  margin: auto;
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
+    margin: auto;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
 }

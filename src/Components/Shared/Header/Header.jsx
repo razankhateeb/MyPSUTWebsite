@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon as emptyMoon } from "@fortawesome/free-regular-svg-icons";
@@ -8,10 +8,14 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import Search from "./Search";
 import AuthContext from "../../../Auth/authContext";
 import logo from "../../../img/logo.png";
+import ResetPass from "./ResetPass";
 
-function HeaderComponent() {
+function HeaderComponent(props) {
   const authCtx = useContext(AuthContext);
-
+  const [modalResetShow, setModalResetShow] = useState(false);
+  function CloseReset() {
+    setModalResetShow(false);
+  }
   function toggleTheme() {
     var modeSwitch = document.querySelector(".mode-switch");
 
@@ -20,7 +24,6 @@ function HeaderComponent() {
       modeSwitch.classList.toggle("active");
     });
   }
-
   return (
     <header>
       <div className="container">
@@ -32,7 +35,7 @@ function HeaderComponent() {
             <a className="app-name" title="Home">
               MyPSUTWebApp
             </a>
-            <Search></Search>
+            <Search setSearch={props.setSearch}></Search>
           </div>
           <div className="app-header-right">
             <button
@@ -55,7 +58,10 @@ function HeaderComponent() {
                 <FontAwesomeIcon icon={faSignOut} />
               </i>
             </button>
-            <button className="profile-btn">
+            <button
+              className="profile-btn"
+              onClick={() => setModalResetShow(true)}
+            >
               <i>
                 <FontAwesomeIcon icon={faUser} />
               </i>
@@ -65,6 +71,7 @@ function HeaderComponent() {
           </div>
         </div>
       </div>
+      <ResetPass show={modalResetShow} onHide={CloseReset}></ResetPass>
     </header>
   );
 }

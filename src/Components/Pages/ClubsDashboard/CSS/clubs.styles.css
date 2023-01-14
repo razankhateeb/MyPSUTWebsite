@@ -27,7 +27,7 @@
 
 .project-boxes.jsListView .project-box-content-header {
   order: 1;
-  max-width: 30%;
+  width: 30%;
 }
 
 .project-boxes.jsListView .project-box-header {

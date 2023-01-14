@@ -3,21 +3,20 @@ import {useState} from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import "./CSS/editform.styles.css";
+import "../../EventsDashboard/CSS/editform.styles.css";
 
 const success = () => toast.success("Successfully registered");
 const errormsg = () => toast.error("Oops! An error occurred.");
 
-export default function EditForm(props) {
+export default function EditFormEventClub(props) {
     const [name, setName] = useState(props.data.name);
     const [location, setLoctation] = useState(props.data.location);
-    const [sDate, setSDate] = useState(props.data.sDate);
-    const [eDate, setEDate] = useState(props.data.eDate);
-    const [sTime, setSTime] = useState(props.data.sTime);
-    const [eTime, setETime] = useState(props.data.eTime);
+    const [sDate, setSDate] = useState(props.data.start_date);
+    const [eDate, setEDate] = useState(props.data.end_date);
+    const [sTime, setSTime] = useState(props.data.start_time);
+    const [eTime, setETime] = useState(props.data.end_time);
     const [description, setDescription] = useState(props.data.description);
     const [image, setImage] = useState("");
-    // props.data.organizers[0].organizer_id
 
     const submitForm = async (event) => {
         // prevents default form as in prevents reload on submit
@@ -28,7 +27,7 @@ export default function EditForm(props) {
         //axios helps to send post
         await axios
             .post(
-                `http://localhost:8000/update_event/${props.data.id}?event_name=${name}&location=${location}&start_date=${sDate}&end_date=${eDate}&start_time=${sTime}&end_time=${eTime}&description=${description}`,
+                `http://localhost:8000/update_event/${props.data.event_id}?event_name=${name}&location=${location}&start_date=${sDate}&end_date=${eDate}&start_time=${sTime}&end_time=${eTime}&description=${description}`,
                 request,
                 {
                     headers: {
@@ -38,9 +37,9 @@ export default function EditForm(props) {
             )
             .then((response) => {
                 if (response.status === 200) {
-                    success();
+                    props.fetchJobsHandler();
                     props.onHide();
-                    props.fetchEventHandler();
+                    success();
                 }
             })
             .catch((error) => {
@@ -59,8 +58,7 @@ export default function EditForm(props) {
                 <Modal.Title id="contained-modal-title-vcenter">Edit Event</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {console.log(props.active)}
-                <form action="" className="form-container">
+                <form action="src/Components/Pages/ClubsDashboard/Components" className="form-container">
                     <div className="row">
                         <div className="col-sm-12 col-lg-6">
                             <label htmlFor="Event Name">
@@ -70,7 +68,7 @@ export default function EditForm(props) {
                                 type="text"
                                 placeholder="Enter Event Name"
                                 name="name"
-                                value={name}
+                                value={props.data.event_name}
                                 onChange={(e) => {
                                     setName(e.target.value);
                                 }}
@@ -125,7 +123,7 @@ export default function EditForm(props) {
                                 type="date"
                                 placeholder="Enter Date"
                                 name="sdate"
-                                value={sDate}
+                                value={props.data.start_date}
                                 onChange={(e) => {
                                     setSDate(e.target.value);
                                 }}
@@ -140,7 +138,7 @@ export default function EditForm(props) {
                                 type="date"
                                 placeholder="Enter Date"
                                 name="edate"
-                                value={eDate}
+                                value={props.data.end_date}
                                 onChange={(e) => {
                                     setEDate(e.target.value);
                                 }}
@@ -153,7 +151,7 @@ export default function EditForm(props) {
                             <input
                                 type="time"
                                 placeholder="Enter Time"
-                                value={sTime}
+                                value={props.data.start_time}
                                 onChange={(e) => {
                                     setSTime(e.target.value);
                                 }}
@@ -166,7 +164,7 @@ export default function EditForm(props) {
                             <input
                                 type="time"
                                 placeholder="Enter Time"
-                                value={eTime}
+                                value={props.data.end_time}
                                 onChange={(e) => {
                                     setETime(e.target.value);
                                 }}
